@@ -5,7 +5,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.util.Objects;
 
 import org.slf4j.Logger;
-
 import ch.bibbias.view.FxmlView;
 import javafx.application.Platform;
 import javafx.scene.Parent;

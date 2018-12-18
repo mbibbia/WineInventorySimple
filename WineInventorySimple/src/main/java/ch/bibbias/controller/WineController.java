@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
 import ch.bibbias.config.StageManager;
@@ -37,6 +38,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
+@Controller
 public class WineController implements Initializable {
 
 	@FXML
@@ -73,7 +75,7 @@ public class WineController implements Initializable {
 	private TableView<Wine> wineTable;
 
 	@FXML
-	private TableColumn<Wine, Long> coleWineId;
+	private TableColumn<Wine, Long> colWineId;
 
 	@FXML
 	private TableColumn<Wine, String> colName;
@@ -106,7 +108,11 @@ public class WineController implements Initializable {
 	private WineService wineService;
 
 	private ObservableList<Wine> wineList = FXCollections.observableArrayList();
-	private ObservableList<String> roles = FXCollections.observableArrayList("Admin", "Wine");
+	private ObservableList<String> types = FXCollections.observableArrayList("","Rotwein", "Weisswein");
+	private ObservableList<String> classifications = FXCollections.observableArrayList("DOC", "DOCG");
+	private ObservableList<String> countries = FXCollections.observableArrayList("CH", "FR", "IT");
+	private ObservableList<String> regions = FXCollections.observableArrayList("Zürich", "Bordeaux", "Piemont");
+	private ObservableList<String> producers = FXCollections.observableArrayList("Parusso", "Gérard Bertrand", "Sciavenza");
 
 	@FXML
 	void reset(ActionEvent event) {
@@ -155,7 +161,7 @@ public class WineController implements Initializable {
 	}
 
 	@FXML
-	void deleteUsers(ActionEvent event) {
+	void deleteWines(ActionEvent event) {
 		List<Wine> wines = wineTable.getSelectionModel().getSelectedItems();
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -178,6 +184,12 @@ public class WineController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		type.setItems(types);
+		classification.setItems(classifications);
+		country.setItems(countries);
+		region.setItems(regions);
+		producer.setItems(producers);
 
 		wineTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -189,7 +201,7 @@ public class WineController implements Initializable {
 
 	private void setColumnProperties() {
 
-		coleWineId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colWineId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 		colClassification.setCellValueFactory(new PropertyValueFactory<>("classification"));

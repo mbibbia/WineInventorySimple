@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.WineController">
 	<top>
       <MenuBar BorderPane.alignment="TOP_LEFT">
         <menus>
@@ -52,12 +52,12 @@
             </Label>
             <HBox prefHeight="30.0" prefWidth="265.0">
                <children>
-                  <Label fx:id="wineId" text="Wine ID - " textFill="#f8f7f7">
+                  <Label text="Wine ID - " textFill="#f8f7f7">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="userId">
+                  <Label fx:id="wineId">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -132,10 +132,10 @@
       <VBox alignment="TOP_RIGHT" prefHeight="571.0" prefWidth="692.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="TOP_RIGHT" prefHeight="41.0" prefWidth="640.0" />
-            <TableView fx:id="userTable" prefHeight="300.0" prefWidth="679.0" tableMenuButtonVisible="true">
+            <TableView fx:id="wineTable" prefHeight="300.0" prefWidth="679.0" tableMenuButtonVisible="true">
               <columns>
-                <TableColumn fx:id="colWineId" maxWidth="700.0" prefWidth="20.0" text="ID" />
-                <TableColumn fx:id="colName" maxWidth="4000.0" prefWidth="75.0" text="Name" />
+                  <TableColumn fx:id="colWineId" maxWidth="700.0" prefWidth="20.0" text="ID" />
+                  <TableColumn fx:id="colName" maxWidth="4000.0" prefWidth="75.0" text="Name" />
                   <TableColumn fx:id="colType" maxWidth="4000.0" prefWidth="75.0" text="Type" />
                   <TableColumn fx:id="colClassification" maxWidth="4000.0" prefWidth="75.0" text="Classification" />
                   <TableColumn fx:id="colCountry" maxWidth="4000.0" prefWidth="60.0" text="Country" />
@@ -152,7 +152,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem fx:id="deleteUsers" mnemonicParsing="false" onAction="#deleteUsers" text="Delete" />
+                      <MenuItem fx:id="deleteWines" mnemonicParsing="false" onAction="#deleteWines" text="Delete" />
                     </items>
                   </ContextMenu>
                </contextMenu>
