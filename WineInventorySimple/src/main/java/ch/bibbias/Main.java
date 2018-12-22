@@ -1,6 +1,7 @@
 package ch.bibbias;
 
 import javafx.application.Application;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.view.FxmlView;
+import com.jeitziner.view.Desktop;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -28,6 +30,17 @@ public class Main extends Application {
 	public void start(Stage stage) throws Exception {
 		stageManager = springContext.getBean(StageManager.class, stage);
 		displayInitialScene();
+		
+		//
+		System.out.println("Working Directory = " + System.getProperty("user.dir"));
+		String jsonFilePath = "src/main/resources/config/desktop.json";
+		Desktop desktop = Desktop.createDesktopFromJsonFile("Desktop Three", jsonFilePath);		
+		if (desktop != null) {
+			Region region = desktop.getRegion();
+			System.out.println(desktop.toString());
+		}
+
+		
 	}
 
 	@Override
