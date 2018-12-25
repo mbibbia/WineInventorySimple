@@ -14,6 +14,7 @@ import java.io.InputStream;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.stream.JsonParsingException;
 
 /**
  * This class implements a static method "getJsonObjectFromFile" to 
@@ -47,7 +48,7 @@ public class JsonObjectReader {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException ex) {
-			System.out.println(String.format("Cannot read file '%s'", filePath));			
+			System.out.println(String.format("Cannot read file '%s'", filePath));
 		}
 
 		return jsonObject;		
@@ -71,9 +72,15 @@ public class JsonObjectReader {
 	 * @return {JsonObject}
 	 */
 	private static JsonObject getJsonObjectFromInputStream(InputStream is) {
+		JsonObject jsonObject = null;
 		JsonReader jsonReader = Json.createReader(is);
-		JsonObject jsonObject = jsonReader.readObject();
-		jsonReader.close();
+		try {
+			jsonObject = jsonReader.readObject();
+		} catch (JsonParsingException ex) {
+			//ex.printStackTrace();
+		} finally {
+			jsonReader.close();
+		}
 		return jsonObject;
 	}
 		
