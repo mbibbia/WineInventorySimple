@@ -2,10 +2,14 @@ package ch.bibbias.config;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.util.Objects;
+import java.util.Map;
 
 import org.slf4j.Logger;
-import ch.bibbias.view.FxmlView;
+
+import com.jeitziner.view.Desktop;
+
+import ch.bibbias.view.FxmlLoaderImpl;
+import ch.qos.logback.classic.Level;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,15 +20,40 @@ public class StageManager {
 	private static final Logger LOG = getLogger(StageManager.class);
 	private final Stage primaryStage;
 	private final SpringFXMLLoader springFXMLLoader;
+	
+	/**
+	 * Read "desktop.json" file and create all Desktop instances. 
+	 * Store Desktop instances in a map, key = desktop name
+	 */
+	private final Map<String, Desktop> desktopMap;
 
 	public StageManager(SpringFXMLLoader springFXMLLoader, Stage stage) {
 		this.springFXMLLoader = springFXMLLoader;
 		this.primaryStage = stage;
-	}
 
-	public void switchScene(final FxmlView view) {
-		Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
-		show(viewRootNodeHierarchy, view.getTitle());
+		// load all configures desktops from json file.
+		LOG.info("Working Directory = " + System.getProperty("user.dir"));
+		String jsonFilePath = "src/main/resources/config/desktop.json";
+		LOG.info("Read desktop config from: " + jsonFilePath);
+		this.desktopMap = Desktop.getDesktopsFromFile(jsonFilePath);
+	}
+	
+	public void switchSceneByName(String desktopName) {
+		Desktop desktop = this.desktopMap.getOrDefault(desktopName, null);		
+		if (desktop == null) {
+			LOG.error(String.format("Cannot load desktop '%s'",desktopName));
+			return;
+		}
+		LOG.info(String.format("Desktop %s successfully loaded", desktopName));
+		LOG.info(String.format(desktop.toString()));
+
+		if (desktop != null) {
+			FxmlLoaderImpl fxmlLoader = new FxmlLoaderImpl(springFXMLLoader);
+			Parent viewRootNodeHierarchy = desktop.createParent(fxmlLoader);
+			
+			show(viewRootNodeHierarchy, "Should get title from view");
+		}
+
 	}
 
 	private void show(final Parent rootnode, String title) {
@@ -52,23 +81,6 @@ public class StageManager {
 		}
 		scene.setRoot(rootnode);
 		return scene;
-	}
-
-	/**
-	 * Loads the object hierarchy from a FXML document and returns to root node of
-	 * that hierarchy.
-	 *
-	 * @return Parent root node of the FXML document hierarchy
-	 */
-	private Parent loadViewNodeHierarchy(String fxmlFilePath) {
-		Parent rootNode = null;
-		try {
-			rootNode = springFXMLLoader.load(fxmlFilePath);
-			Objects.requireNonNull(rootNode, "A Root FXML node must not be null");
-		} catch (Exception exception) {
-			logAndExit("Unable to load FXML view" + fxmlFilePath, exception);
-		}
-		return rootNode;
 	}
 
 	private void logAndExit(String errorMsg, Exception exception) {

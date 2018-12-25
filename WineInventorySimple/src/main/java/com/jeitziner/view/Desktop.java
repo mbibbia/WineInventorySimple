@@ -1,5 +1,7 @@
 package com.jeitziner.view;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +10,15 @@ import java.util.Map;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+import org.slf4j.Logger;
+
 import com.jeitziner.json.JsonObjectReader;
 
-import javafx.geometry.Insets;
+import ch.bibbias.config.StageManager;
+import ch.bibbias.view.FxmlLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.Region;
+import javafx.scene.Parent;
 
 /**
  * Usage of Composite pattern (Design Pattern, Gamma/Helm/Johnson/Vlissides)
@@ -23,8 +28,9 @@ import javafx.scene.layout.Region;
  * @author Christian Jeitziner
  *
  */
+
 interface Component {
-	Region getRegion();
+	Parent createParent(FxmlLoader loader);
 	String toString();
 }
 
@@ -41,9 +47,9 @@ class ViewGroup implements Component {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("ViewGroup: %s", getName()));
+		sb.append(String.format("\nViewGroup: %s", getName()));
 		for (Component component: this.components) {
-			sb.append(component.toString());
+			sb.append(String.format("%s", component.toString()));
 		}
 		return sb.toString();
 	}
@@ -64,7 +70,7 @@ class ViewGroup implements Component {
 		this.components.add(component);
 	}
 
-	public Region getRegion() {
+	public Parent createParent(FxmlLoader loader) {
 		if (this.components.size() > 1) {
 			final SplitPane splitPane = new SplitPane();
 			if (this.getOrientation().toLowerCase().equals("horizontal")) {
@@ -73,11 +79,11 @@ class ViewGroup implements Component {
 				splitPane.setOrientation(Orientation.VERTICAL);				
 			}
 			for (Component component : this.components) {
-				splitPane.getItems().add(component.getRegion());
+				splitPane.getItems().add(component.createParent(loader));
 			}
 			return splitPane;
 		} else if (this.components.size() == 1) {
-			return this.components.get(0).getRegion();
+			return this.components.get(0).createParent(loader);
 		}
 		return null;
 	}
@@ -88,25 +94,32 @@ class View implements Component {
 	 * A view can be identified by a unique name.
 	 */
 	private String name;
+	private String fxmlFile;
 
-	public View(String name) {
+	public View(String name, String fxmlFile) {
 		this.name = name;
+		this.fxmlFile = fxmlFile;
 	}
 	
 	public String toString() {
-		return String.format("View: %s", getName());
+		return String.format("\nView: %s %s", getName(), getFxmlFile());
 	}
 	
 	String getName() {
 		return this.name;
 	}
 
-	public Region getRegion() {
-		return ViewFactory.getInstance().getRegion(name);
+	String getFxmlFile() {
+		return this.fxmlFile;
+	}
+
+	public Parent createParent(FxmlLoader loader) {
+		return loader.load(this.fxmlFile);
 	}
 }
 
 public class Desktop {
+	private static final Logger LOG = getLogger(Desktop.class);
 	private String name;
 	private ViewGroup rootGroup;
 
@@ -118,7 +131,7 @@ public class Desktop {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("Desktop %s", getName()));
-		sb.append(this.rootGroup.toString());
+		sb.append(String.format("%s", this.rootGroup.toString()));
 		return sb.toString();
 	}
 	
@@ -129,7 +142,7 @@ public class Desktop {
 	public static Desktop createDesktopFromJsonFile(String desktopName, String filePath) {
 		JsonObject rootObj = JsonObjectReader.getJsonObjectFromFile(filePath);
 		if (rootObj == null) {
-			System.out.println("JsonFile: rootObj is null");
+			LOG.error("JsonFile: rootObj is null");
 			return null;
 		}		
 		return Desktop.create(desktopName, rootObj);
@@ -138,8 +151,8 @@ public class Desktop {
 	public static Desktop createDesktopFromJsonString(String desktopName, String jsonString) {
 		JsonObject rootObj = JsonObjectReader.getJsonObjectFromString(jsonString);
 		if (rootObj == null) {
-			System.out.println("JsonString: rootObj is null");
-			return null;
+			LOG.error("JsonString: rootObj is null");
+		return null;
 		}		
 		return Desktop.create(desktopName, rootObj);
 	}
@@ -148,7 +161,7 @@ public class Desktop {
 	public static Map<String, Desktop> getDesktopsFromFile(String filePath) {
 		JsonObject rootObj = JsonObjectReader.getJsonObjectFromFile(filePath);
 		if (rootObj == null) {
-			System.out.println("JsonFile: rootObj is null");
+			LOG.error("JsonFile: rootObj is null");
 			return null;
 		}		
 		return Desktop.getDesktopsFromJsonObj(rootObj);
@@ -159,7 +172,7 @@ public class Desktop {
 		HashMap<String, Desktop> map = new HashMap<>();
 
 		if (rootObj == null) {
-			System.out.println("Cannot create Desktop with nullObj");
+			LOG.error("Cannot create Desktop with nullObj");
 			return map;
 		}
 
@@ -167,13 +180,14 @@ public class Desktop {
 		Map<String, View> viewMap = new HashMap<>();
 		JsonArray views = rootObj.getJsonArray("views");
 		if (views == null) {
-			System.out.println("views is null");
+			LOG.error("No json field views exists.");
 			return null;
 		}
 		for (int vi = 0; vi < views.size(); ++vi) {
 			JsonObject currentView = views.getJsonObject(vi);
 			String name = currentView.getString("name");
-			viewMap.put(name, new View(name));
+			String fxmlFile = currentView.getString("fxmlFile");
+			viewMap.put(name, new View(name, fxmlFile));
 		}
 		
 		JsonArray desktops = rootObj.getJsonArray("desktops");
@@ -277,7 +291,8 @@ public class Desktop {
 		for (int vi = 0; vi < views.size(); ++vi) {
 			JsonObject currentView = views.getJsonObject(vi);
 			String name = currentView.getString("name");
-			viewMap.put(name, new View(name));
+			String fxmlFile = currentView.getString("fxmlFile");
+			viewMap.put(name, new View(name, fxmlFile));
 		}		
 
 		// Read all viewGroups for desktop. This is a pre-initialization
@@ -335,10 +350,10 @@ public class Desktop {
 		return new Desktop(desktopName, rootViewGroup);
 	}
 
-	public Region getRegion() {
+	public Parent createParent(FxmlLoader loader) {
 		if (this.rootGroup == null) {
 			return null;
 		}
-		return this.rootGroup.getRegion();
+		return this.rootGroup.createParent(loader);
 	}
 }

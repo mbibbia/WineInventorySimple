@@ -30,17 +30,6 @@ public class Main extends Application {
 	public void start(Stage stage) throws Exception {
 		stageManager = springContext.getBean(StageManager.class, stage);
 		displayInitialScene();
-		
-		//
-		System.out.println("Working Directory = " + System.getProperty("user.dir"));
-		String jsonFilePath = "src/main/resources/config/desktop.json";
-		Desktop desktop = Desktop.createDesktopFromJsonFile("Desktop Three", jsonFilePath);		
-		if (desktop != null) {
-			Region region = desktop.getRegion();
-			System.out.println(desktop.toString());
-		}
-
-		
 	}
 
 	@Override
@@ -52,8 +41,9 @@ public class Main extends Application {
 	 * Useful to override this method by sub-classes wishing to change the first
 	 * Scene to be displayed on startup. Example: Functional tests on main window.
 	 */
-	protected void displayInitialScene() {
-		stageManager.switchScene(FxmlView.WINE);
+	protected void displayInitialScene() {		
+		stageManager.switchSceneByName("Desktop 2");
+		//stageManager.switchSceneByName("Desktop Wine");
 	}
 
 	private ConfigurableApplicationContext springBootApplicationContext() {

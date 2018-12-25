@@ -1,60 +1,74 @@
 {
-    "lang" : "de",
-
-    "database": "SQLite",
-
     "desktops" : [
         {
-            "name": "Desktop oneButton",
-            "viewGroup": "oneButton"
+            "name": "Desktop Wine",
+            "viewGroup": "wineGroup"
         },
         {
-            "name": "Desktop anotherButton",
-            "viewGroup": "anotherButton"
+            "name": "Desktop Wine2",
+            "viewGroup": "wineGroup2"
         },
         {
-            "name": "Desktop Two",
-            "viewGroup": "twoButtons"
+            "name": "Desktop 1",
+            "viewGroup": "group1"
         },
         {
-            "name": "Desktop Three",
-            "viewGroup": "threeButtons"
+            "name": "Desktop 2",
+            "viewGroup": "group1"
         }       
     ],
 
     "viewGroups": [
         {
-            "name": "oneButton",
+            "name": "group11",
             "orientation": "vertical",
-            "viewGroups": [{"type": "view", "name": "redButton"}]
+            "viewGroups": [{"type": "view", "name": "dummyViewOne"},
+                           {"type": "view", "name": "dummyViewTwo"}]
         },
         {
-            "name": "anotherButton",
-            "orientation": "vertical",
-            "viewGroups": [{"type": "view", "name": "greenButton"}]
-        },
-        {
-            "name": "twoButtons",
-            "orientation": "vertical",
-            "viewGroups": [{"type": "viewGroup", "name": "oneButton"},
-                           {"type": "viewGroup", "name": "anotherButton"}]
-        },
-        {
-            "name": "threeButtons",
+            "name": "group21",
             "orientation": "horizontal",
-            "viewGroups": [{"type": "viewGroup", "name": "twoButtons"},
-                           {"type": "view", "name": "blueButton"}]
+            "viewGroups": [{"type": "view", "name": "dummyViewOne"},
+                           {"type": "view", "name": "dummyViewTwo"}]
+        },
+        {
+            "name": "wineGroup",
+            "orientation": "vertical",
+            "viewGroups": [{"type": "view", "name": "wine"}]
+        },
+        {
+            "name": "wineGroup2",
+            "orientation": "vertical",
+            "viewGroups": [{"type": "view", "name": "wine2"}]
+        },
+        {
+            "name": "group1",
+            "orientation": "vertical",
+            "viewGroups": [{"type": "viewGroup", "name": "group11"},
+                           {"type": "viewGroup", "name": "group21"}]
+        },
+        {
+            "name": "group2",
+            "orientation": "vertical",
+            "viewGroups": [{"type": "view", "name": "dummyViewOne"}]
         }
     ],
     "views": [
         {
-            "name": "redButton"
+            "name": "dummyViewOne",
+            "fxmlFile": "/fxml/DummyViewOne.fxml"
         },
         {
-            "name": "greenButton"
+            "name": "dummyViewTwo",
+            "fxmlFile": "/fxml/DummyViewTwo.fxml"
         },
         {
-            "name": "blueButton"
+            "name": "wine",
+            "fxmlFile": "/fxml/Wine.fxml"
+        },
+        {
+            "name": "wine2",
+            "fxmlFile": "/fxml/Wine2.fxml"
         }
     ]
 
