@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import com.jeitziner.view.Desktop;
 
 import ch.bibbias.view.FxmlLoaderImpl;
-import ch.qos.logback.classic.Level;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -51,7 +50,18 @@ public class StageManager {
 			FxmlLoaderImpl fxmlLoader = new FxmlLoaderImpl(springFXMLLoader);
 			Parent viewRootNodeHierarchy = desktop.createParent(fxmlLoader);
 			
-			show(viewRootNodeHierarchy, "Should get title from view");
+			String appName = AppProperties.getInstance().appName;
+			Integer appVersion = AppProperties.getInstance().appVersion;
+						
+			//show(viewRootNodeHierarchy, "Should get title from view");
+			String title = null;
+			if (appName == null || appName.isEmpty()) {
+				title = desktop.getName();
+			} else {
+				title = String.format("%s (Version %d) - %s", appName, appVersion, desktop.getName());
+			}
+			//show(viewRootNodeHierarchy, desktop.getName());
+			show(viewRootNodeHierarchy, title);
 		}
 
 	}

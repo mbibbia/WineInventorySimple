@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import ch.bibbias.config.AppProperties;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.view.FxmlView;
 import com.jeitziner.view.Desktop;
@@ -18,6 +20,9 @@ public class Main extends Application {
 	protected StageManager stageManager;
 
 	public static void main(final String[] args) {
+		// Explicitly initialize singletons to avoid threading issues.
+		AppProperties.init("src/main/resources/application.properties");		
+		
 		Application.launch(args);
 	}
 

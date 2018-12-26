@@ -51,6 +51,9 @@
   <logger name="com.zaxxer.hikari" level="WARN" />
   
   <!-- Logging for StageManager -->
+  <logger name="ch.bibbias.config.AppProperties" level="DEBUG" />
+    
+  <!-- Logging for StageManager -->
   <logger name="ch.bibbias.config.StageManager" level="DEBUG" />
   
   <!-- Logging for Desktop -->
