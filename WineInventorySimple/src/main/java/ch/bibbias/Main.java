@@ -1,13 +1,17 @@
 package ch.bibbias;
 
 import javafx.application.Application;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import ch.bibbias.config.AppProperties;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.view.FxmlView;
+import com.jeitziner.view.Desktop;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -16,6 +20,9 @@ public class Main extends Application {
 	protected StageManager stageManager;
 
 	public static void main(final String[] args) {
+		// Explicitly initialize singletons to avoid threading issues.
+		AppProperties.init("src/main/resources/application.properties");		
+		
 		Application.launch(args);
 	}
 
@@ -39,8 +46,14 @@ public class Main extends Application {
 	 * Useful to override this method by sub-classes wishing to change the first
 	 * Scene to be displayed on startup. Example: Functional tests on main window.
 	 */
+<<<<<<< HEAD
 	protected void displayInitialScene() {
 		stageManager.switchScene(FxmlView.WINETABLE);
+=======
+	protected void displayInitialScene() {		
+		stageManager.switchSceneByName("Desktop 2");
+		//stageManager.switchSceneByName("Desktop Wine");
+>>>>>>> refs/heads/christian
 	}
 
 	private ConfigurableApplicationContext springBootApplicationContext() {
