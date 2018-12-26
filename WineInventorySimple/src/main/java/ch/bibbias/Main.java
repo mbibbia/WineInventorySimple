@@ -19,7 +19,6 @@ public class Main extends Application {
 	public static void main(final String[] args) {
 		// Explicitly initialize singletons to avoid threading issues.
 		AppProperties.init("src/main/resources/application.properties");
-
 		Application.launch(args);
 	}
 
@@ -32,6 +31,7 @@ public class Main extends Application {
 	public void start(Stage stage) throws Exception {
 		stageManager = springContext.getBean(StageManager.class, stage);
 		displayInitialScene();
+
 	}
 
 	@Override

@@ -108,11 +108,13 @@ public class WineController implements Initializable {
 	private WineService wineService;
 
 	private ObservableList<Wine> wineList = FXCollections.observableArrayList();
-	private ObservableList<String> types = FXCollections.observableArrayList("","Rotwein", "Weisswein");
+
+	private ObservableList<String> types = FXCollections.observableArrayList("", "Rotwein", "Weisswein");
 	private ObservableList<String> classifications = FXCollections.observableArrayList("DOC", "DOCG");
 	private ObservableList<String> countries = FXCollections.observableArrayList("CH", "FR", "IT");
 	private ObservableList<String> regions = FXCollections.observableArrayList("Zürich", "Bordeaux", "Piemont");
-	private ObservableList<String> producers = FXCollections.observableArrayList("Parusso", "Gérard Bertrand", "Sciavenza");
+	private ObservableList<String> producers = FXCollections.observableArrayList("Parusso", "Gérard Bertrand",
+			"Sciavenza");
 
 	@FXML
 	void reset(ActionEvent event) {
@@ -184,7 +186,7 @@ public class WineController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+
 		type.setItems(types);
 		classification.setItems(classifications);
 		country.setItems(countries);
@@ -315,7 +317,7 @@ public class WineController implements Initializable {
 	private void loadWineDetails() {
 		wineList.clear();
 		wineList.addAll(wineService.findAll());
-	
+
 		wineTable.setItems(wineList);
 	}
 

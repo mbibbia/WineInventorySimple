@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 
 import com.jeitziner.json.JsonObjectReader;
 
-import ch.bibbias.config.StageManager;
 import ch.bibbias.view.FxmlLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;

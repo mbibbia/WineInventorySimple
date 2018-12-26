@@ -4,23 +4,33 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
 import ch.bibbias.config.StageManager;
+import ch.bibbias.event.NewWineEvent;
+import ch.bibbias.event.EditWineDetails;
 import ch.bibbias.service.WineService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Callback;
 
 @Controller
-public class WineTableController implements Initializable {
+public class WineTableController implements Initializable, ApplicationListener<NewWineEvent> {
 
 	@FXML
 	private TableView<Wine> wineTable;
@@ -55,7 +65,10 @@ public class WineTableController implements Initializable {
 	@Autowired
 	private WineService wineService;
 
-	private ObservableList<Wine> wineList = FXCollections.observableArrayList();
+	@Autowired
+	private ApplicationEventPublisher applicationEventPublisher;
+
+	private final ObservableList<Wine> wineList = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -70,6 +83,7 @@ public class WineTableController implements Initializable {
 		colCountry.setCellValueFactory(new PropertyValueFactory<>("country"));
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
 		colProducer.setCellValueFactory(new PropertyValueFactory<>("producer"));
+		colEdit.setCellFactory(cellFactory);
 
 		// loadWineDetails
 		wineList.clear();
@@ -79,4 +93,56 @@ public class WineTableController implements Initializable {
 
 	}
 
+	private void raiseEventShowWine(final Wine wine) {
+		EditWineDetails wineEvent = new EditWineDetails(this, wine);
+		applicationEventPublisher.publishEvent(wineEvent);
+	}
+
+	public ObservableList<Wine> getWineList() {
+		return wineList;
+	}
+
+	@Override
+	public void onApplicationEvent(NewWineEvent event) {
+		wineList.add(event.getWine());
+	}
+
+	Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>> cellFactory = new Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>>() {
+		@Override
+		public TableCell<Wine, Boolean> call(final TableColumn<Wine, Boolean> param) {
+			final TableCell<Wine, Boolean> cell = new TableCell<Wine, Boolean>() {
+				Image imgEdit = new Image(getClass().getResourceAsStream("/images/edit.png"));
+				final Button btnEdit = new Button();
+
+				@Override
+				public void updateItem(Boolean check, boolean empty) {
+					super.updateItem(check, empty);
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+					} else {
+						btnEdit.setOnAction(e -> {
+							Wine wine = getTableView().getItems().get(getIndex());
+							raiseEventShowWine(wine);
+						});
+
+						btnEdit.setStyle("-fx-background-color: transparent;");
+						ImageView iv = new ImageView();
+						iv.setImage(imgEdit);
+						iv.setPreserveRatio(true);
+						iv.setSmooth(true);
+						iv.setCache(true);
+						btnEdit.setGraphic(iv);
+
+						setGraphic(btnEdit);
+						setAlignment(Pos.CENTER);
+						setText(null);
+					}
+				}
+
+			};
+			return cell;
+		}
+	};	
+	
 }

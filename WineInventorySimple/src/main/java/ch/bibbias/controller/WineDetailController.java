@@ -4,12 +4,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
+import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
+import ch.bibbias.event.NewWineEvent;
+import ch.bibbias.event.EditWineDetails;
 import ch.bibbias.service.WineService;
+import ch.bibbias.service.WineTypeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
 @Controller
-public class WineDetailController implements Initializable {
+public class WineDetailController implements Initializable, ApplicationListener<EditWineDetails> {
 
 	@FXML
 	private Label wineId;
@@ -59,24 +65,72 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Lazy
+	@Autowired
+	private WineTableController wineTableController;
+
+	@Autowired
+	private ApplicationEventPublisher applicationEventPublisher;
+
 	@Autowired
 	private WineService wineService;
 
-	private ObservableList<String> types = FXCollections.observableArrayList("", "Rotwein", "Weisswein");
-	private ObservableList<String> classifications = FXCollections.observableArrayList("", "DOC", "DOCG");
-	private ObservableList<String> countries = FXCollections.observableArrayList("", "CH", "FR", "IT");
-	private ObservableList<String> regions = FXCollections.observableArrayList("", "Zürich", "Bordeaux", "Piemont");
-	private ObservableList<String> producers = FXCollections.observableArrayList("", "Parusso", "Gérard Bertrand",
-			"Sciavenza");
+	@Autowired
+	private WineTypeService wineTypeService;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		type.setItems(types);
-		classification.setItems(classifications);
-		country.setItems(countries);
-		region.setItems(regions);
-		producer.setItems(producers);
+		type.setItems(loadTypes());
+		classification.setItems(loadClassifications());
+		country.setItems(loadCountries());
+		region.setItems(loadRegions());
+		producer.setItems(loadProducers());
+
+	}
+
+	private ObservableList<String> loadTypes() {
+
+		ObservableList<String> types = FXCollections.observableArrayList();
+
+		for (WineType wt : wineTypeService.findAll()) {
+			types.add(wt.toString());
+		}
+
+		return types;
+
+	}
+
+	private ObservableList<String> loadClassifications() {
+
+		ObservableList<String> classifications = FXCollections.observableArrayList("", "DOC", "DOCG");
+
+		return classifications;
+
+	}
+
+	private ObservableList<String> loadCountries() {
+
+		ObservableList<String> countries = FXCollections.observableArrayList("", "CH", "FR", "IT");
+
+		return countries;
+
+	}
+
+	private ObservableList<String> loadRegions() {
+
+		ObservableList<String> regions = FXCollections.observableArrayList("", "Zürich", "Bordeaux", "Piemont");
+
+		return regions;
+
+	}
+
+	private ObservableList<String> loadProducers() {
+
+		ObservableList<String> producers = FXCollections.observableArrayList("", "Parusso", "Gérard Bertrand",
+				"Sciavenza");
+
+		return producers;
 
 	}
 
@@ -144,6 +198,8 @@ public class WineDetailController implements Initializable {
 
 			saveAlert(newWine);
 
+			raiseEventNewWine(newWine);
+
 		} else {
 			Wine wine = wineService.find(Long.parseLong(wineId.getText()));
 			wine.setName(getName());
@@ -158,6 +214,11 @@ public class WineDetailController implements Initializable {
 
 		clearFields();
 
+	}
+
+	private void raiseEventNewWine(final Wine wine) {
+		NewWineEvent wineEvent = new NewWineEvent(this, wine);
+		applicationEventPublisher.publishEvent(wineEvent);
 	}
 
 	private void saveAlert(Wine wine) {
@@ -176,6 +237,19 @@ public class WineDetailController implements Initializable {
 		alert.setHeaderText(null);
 		alert.setContentText("The wine " + wine.getName() + " has been updated.");
 		alert.showAndWait();
+	}
+
+	@Override
+	public void onApplicationEvent(EditWineDetails event) {
+		
+		name.setText(event.getWine().getName());
+		type.setValue(event.getWine().getType());
+		classification.setValue(event.getWine().getClassification());
+		country.setValue(event.getWine().getCountry());
+		region.setValue(event.getWine().getRegion());
+		producer.setValue(event.getWine().getProducer());
+		
+		
 	}
 
 }

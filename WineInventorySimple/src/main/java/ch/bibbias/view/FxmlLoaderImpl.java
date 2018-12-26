@@ -2,14 +2,9 @@ package ch.bibbias.view;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.slf4j.Logger;
 
 import ch.bibbias.config.SpringFXMLLoader;
-import ch.bibbias.config.StageManager;
 import javafx.scene.Parent;
 
 public class FxmlLoaderImpl implements FxmlLoader {
