@@ -315,7 +315,7 @@ public class WineController implements Initializable {
 	private void loadWineDetails() {
 		wineList.clear();
 		wineList.addAll(wineService.findAll());
-
+	
 		wineTable.setItems(wineList);
 	}
 
