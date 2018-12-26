@@ -94,7 +94,6 @@ public class AppProperties {
 		catch (NumberFormatException ex) {
 			LOG.error(String.format("Property %s is not a Integer", propName));			
 		}
-		
 		return (intValue != null) ? intValue  : defaultValue; 
 	}
 	
@@ -122,6 +121,5 @@ public class AppProperties {
 	public static AppProperties getInstance() {
 		return AppProperties.instance;
 	}
-	
-	
+
 }

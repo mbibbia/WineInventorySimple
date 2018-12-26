@@ -18,6 +18,9 @@ import ch.bibbias.config.StageManager;
 import ch.bibbias.view.FxmlLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.Parent;
 
 /**
@@ -30,7 +33,7 @@ import javafx.scene.Parent;
  */
 
 interface Component {
-	Parent createParent(FxmlLoader loader);
+	Pane createPane(FxmlLoader loader);
 	String toString();
 }
 
@@ -70,20 +73,35 @@ class ViewGroup implements Component {
 		this.components.add(component);
 	}
 
-	public Parent createParent(FxmlLoader loader) {
+	public Pane createPane(FxmlLoader loader) {
 		if (this.components.size() > 1) {
+			final AnchorPane anchorPane = new AnchorPane();			
 			final SplitPane splitPane = new SplitPane();
+			AnchorPane.setTopAnchor(splitPane, 5.0);
+			AnchorPane.setLeftAnchor(splitPane, 5.0);
+			AnchorPane.setRightAnchor(splitPane, 5.0);
+			AnchorPane.setBottomAnchor(splitPane, 5.0);
+			
+			anchorPane.getChildren().add(splitPane);
 			if (this.getOrientation().toLowerCase().equals("horizontal")) {
 				splitPane.setOrientation(Orientation.HORIZONTAL);				
 			} else {
 				splitPane.setOrientation(Orientation.VERTICAL);				
 			}
 			for (Component component : this.components) {
-				splitPane.getItems().add(component.createParent(loader));
+				final AnchorPane innerAnchorPane = new AnchorPane();
+				splitPane.getItems().add(innerAnchorPane);
+				Pane subPane = component.createPane(loader);
+				innerAnchorPane.getChildren().add(subPane);				
+				AnchorPane.setTopAnchor(subPane, 5.0);
+				AnchorPane.setLeftAnchor(subPane, 5.0);
+				AnchorPane.setRightAnchor(subPane, 5.0);
+				AnchorPane.setBottomAnchor(subPane, 5.0);				
 			}
-			return splitPane;
+			return anchorPane;
+			
 		} else if (this.components.size() == 1) {
-			return this.components.get(0).createParent(loader);
+			return this.components.get(0).createPane(loader);
 		}
 		return null;
 	}
@@ -113,8 +131,9 @@ class View implements Component {
 		return this.fxmlFile;
 	}
 
-	public Parent createParent(FxmlLoader loader) {
-		return loader.load(this.fxmlFile);
+	public Pane createPane(FxmlLoader loader) {
+		Pane pane = (Pane)loader.load(this.fxmlFile);
+		return pane;
 	}
 }
 
@@ -350,10 +369,10 @@ public class Desktop {
 		return new Desktop(desktopName, rootViewGroup);
 	}
 
-	public Parent createParent(FxmlLoader loader) {
+	public Pane createPane(FxmlLoader loader) {
 		if (this.rootGroup == null) {
 			return null;
 		}
-		return this.rootGroup.createParent(loader);
+		return this.rootGroup.createPane(loader);
 	}
 }

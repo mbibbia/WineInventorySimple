@@ -59,5 +59,7 @@
   <!-- Logging for Desktop -->
   <logger name="com.jeitziner.view.Desktop" level="DEBUG" />
   
-  
+  <!-- Logging for JsonObjectReader -->
+  <logger name="com.jeitziner.json.JsonObjectReader" level="DEBUG" />
+    
 </configuration>

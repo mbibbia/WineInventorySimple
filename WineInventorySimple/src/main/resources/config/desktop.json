@@ -14,22 +14,22 @@
         },
         {
             "name": "Desktop 2",
-            "viewGroup": "group1"
+            "viewGroup": "test"
         }       
     ],
 
     "viewGroups": [
         {
             "name": "group11",
-            "orientation": "vertical",
+            "orientation": "horizontal",
             "viewGroups": [{"type": "view", "name": "dummyViewOne"},
-                           {"type": "view", "name": "dummyViewTwo"}]
+                           {"type": "view", "name": "dummyViewOne"}]
         },
         {
             "name": "group21",
             "orientation": "horizontal",
             "viewGroups": [{"type": "view", "name": "dummyViewOne"},
-                           {"type": "view", "name": "dummyViewTwo"}]
+                           {"type": "view", "name": "dummyViewOne"}]
         },
         {
             "name": "wineGroup",
@@ -51,7 +51,22 @@
             "name": "group2",
             "orientation": "vertical",
             "viewGroups": [{"type": "view", "name": "dummyViewOne"}]
-        }
+        },
+        {
+            "name": "test1",
+            "orientation": "vertical",
+            "viewGroups": [{"type": "view", "name": "dummyButton"},{"type": "view", "name": "dummyViewOne"}]
+        },    
+        {
+            "name": "test2",
+            "orientation": "vertical",
+            "viewGroups": [{"type": "view", "name": "dummyButton"},{"type": "view", "name": "dummyViewOne"}]
+        },       
+        {
+            "name": "test",
+            "orientation": "horizontal",
+            "viewGroups": [{"type": "viewGroup", "name": "test1"},{"type": "viewGroup", "name": "test2"}]
+        }        
     ],
     "views": [
         {
@@ -69,6 +84,14 @@
         {
             "name": "wine2",
             "fxmlFile": "/fxml/Wine2.fxml"
+        },
+        {
+            "name": "dummyViewThree",
+            "fxmlFile": "/fxml/DummyViewThree.fxml"
+        },
+        {
+            "name": "dummyButton",
+            "fxmlFile": "/fxml/DummyButton.fxml"
         }
     ]
 

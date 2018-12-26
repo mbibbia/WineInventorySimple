@@ -12,6 +12,7 @@ import ch.bibbias.view.FxmlLoaderImpl;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class StageManager {
@@ -38,6 +39,7 @@ public class StageManager {
 	}
 	
 	public void switchSceneByName(String desktopName) {
+		LOG.info(String.format("Switch to scene %s", desktopName));
 		Desktop desktop = this.desktopMap.getOrDefault(desktopName, null);		
 		if (desktop == null) {
 			LOG.error(String.format("Cannot load desktop '%s'",desktopName));
@@ -48,7 +50,7 @@ public class StageManager {
 
 		if (desktop != null) {
 			FxmlLoaderImpl fxmlLoader = new FxmlLoaderImpl(springFXMLLoader);
-			Parent viewRootNodeHierarchy = desktop.createParent(fxmlLoader);
+			Pane viewRootNodeHierarchy = desktop.createPane(fxmlLoader);
 			
 			String appName = AppProperties.getInstance().appName;
 			Integer appVersion = AppProperties.getInstance().appVersion;
