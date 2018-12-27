@@ -16,6 +16,34 @@ public enum FxmlView {
 			return "/fxml/Wine.fxml";
 		}
 
+	},
+
+	WINETABLE {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("wineTable.title");
+
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/WineTable.fxml";
+		}
+
+	},
+
+	WINEDETAIL {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("wineDetail.title");
+
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/WineDetail.fxml";
+		}
+
 	};
 
 	public abstract String getTitle();

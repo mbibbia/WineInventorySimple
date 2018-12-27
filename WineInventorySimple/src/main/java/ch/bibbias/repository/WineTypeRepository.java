@@ -3,10 +3,9 @@ package ch.bibbias.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ch.bibbias.bean.Wine;
+import ch.bibbias.bean.WineType;
 
 @Repository
-public interface WineRepository extends JpaRepository<Wine, Long> {
-	
+public interface WineTypeRepository extends JpaRepository<WineType, Long> {
 
 }

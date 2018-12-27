@@ -2,6 +2,9 @@ package ch.bibbias.generic;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public interface GenericService<T extends Object> {
 
 	T save(T entity);

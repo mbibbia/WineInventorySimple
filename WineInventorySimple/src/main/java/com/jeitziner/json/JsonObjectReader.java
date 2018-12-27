@@ -1,9 +1,7 @@
 package com.jeitziner.json;
 
-import java.nio.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.slf4j.LoggerFactory.getLogger;
