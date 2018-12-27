@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
-import ch.bibbias.event.NewWineEvent;
-import ch.bibbias.event.EditWineDetails;
+import ch.bibbias.event.SaveWineEvent;
+import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.WineService;
 import ch.bibbias.service.WineTypeService;
 import javafx.collections.FXCollections;
@@ -29,7 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
 @Controller
-public class WineDetailController implements Initializable, ApplicationListener<EditWineDetails> {
+public class WineDetailController implements Initializable {
 
 	@FXML
 	private Label wineId;
@@ -77,6 +78,24 @@ public class WineDetailController implements Initializable, ApplicationListener<
 
 	@Autowired
 	private WineTypeService wineTypeService;
+
+	@Component
+	class ShowWineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
+
+		@Override
+		public void onApplicationEvent(WineDetailsEvent event) {
+
+			wineId.setText(Long.toString(event.getWine().getId()));
+			name.setText(event.getWine().getName());
+			type.setValue(event.getWine().getType());
+			classification.setValue(event.getWine().getClassification());
+			country.setValue(event.getWine().getCountry());
+			region.setValue(event.getWine().getRegion());
+			producer.setValue(event.getWine().getProducer());
+
+		}
+
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -198,7 +217,7 @@ public class WineDetailController implements Initializable, ApplicationListener<
 
 			saveAlert(newWine);
 
-			raiseEventNewWine(newWine);
+			raiseEventSaveWine(newWine);
 
 		} else {
 			Wine wine = wineService.find(Long.parseLong(wineId.getText()));
@@ -216,8 +235,8 @@ public class WineDetailController implements Initializable, ApplicationListener<
 
 	}
 
-	private void raiseEventNewWine(final Wine wine) {
-		NewWineEvent wineEvent = new NewWineEvent(this, wine);
+	private void raiseEventSaveWine(final Wine wine) {
+		SaveWineEvent wineEvent = new SaveWineEvent(this, wine);
 		applicationEventPublisher.publishEvent(wineEvent);
 	}
 
@@ -237,19 +256,6 @@ public class WineDetailController implements Initializable, ApplicationListener<
 		alert.setHeaderText(null);
 		alert.setContentText("The wine " + wine.getName() + " has been updated.");
 		alert.showAndWait();
-	}
-
-	@Override
-	public void onApplicationEvent(EditWineDetails event) {
-		
-		name.setText(event.getWine().getName());
-		type.setValue(event.getWine().getType());
-		classification.setValue(event.getWine().getClassification());
-		country.setValue(event.getWine().getCountry());
-		region.setValue(event.getWine().getRegion());
-		producer.setValue(event.getWine().getProducer());
-		
-		
 	}
 
 }

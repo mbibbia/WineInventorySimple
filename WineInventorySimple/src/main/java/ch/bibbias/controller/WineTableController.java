@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
 import ch.bibbias.config.StageManager;
-import ch.bibbias.event.NewWineEvent;
-import ch.bibbias.event.EditWineDetails;
+import ch.bibbias.event.SaveWineEvent;
+import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.WineService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,8 +31,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
 @Controller
-public class WineTableController implements Initializable, ApplicationListener<NewWineEvent> {
-
+public class WineTableController implements Initializable {
 	@FXML
 	private TableView<Wine> wineTable;
 
@@ -70,6 +70,17 @@ public class WineTableController implements Initializable, ApplicationListener<N
 
 	private final ObservableList<Wine> wineList = FXCollections.observableArrayList();
 
+	@Component
+	class SaveWineEventHandler implements ApplicationListener<SaveWineEvent> {
+
+		@Override
+		public void onApplicationEvent(SaveWineEvent event) {
+			wineList.add(event.getWine());
+
+		}
+
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -94,17 +105,8 @@ public class WineTableController implements Initializable, ApplicationListener<N
 	}
 
 	private void raiseEventShowWine(final Wine wine) {
-		EditWineDetails wineEvent = new EditWineDetails(this, wine);
+		WineDetailsEvent wineEvent = new WineDetailsEvent(this, wine);
 		applicationEventPublisher.publishEvent(wineEvent);
-	}
-
-	public ObservableList<Wine> getWineList() {
-		return wineList;
-	}
-
-	@Override
-	public void onApplicationEvent(NewWineEvent event) {
-		wineList.add(event.getWine());
 	}
 
 	Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>> cellFactory = new Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>>() {
@@ -143,6 +145,6 @@ public class WineTableController implements Initializable, ApplicationListener<N
 			};
 			return cell;
 		}
-	};	
-	
+	};
+
 }

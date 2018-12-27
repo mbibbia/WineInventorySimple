@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEvent;
 
 import ch.bibbias.bean.Wine;
 
-public class EditWineDetails extends ApplicationEvent {
+public class SaveWineEvent extends ApplicationEvent {
 
 	private Wine wine;
 
@@ -13,7 +13,7 @@ public class EditWineDetails extends ApplicationEvent {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EditWineDetails(Object source, Wine wine) {
+	public SaveWineEvent(Object source, Wine wine) {
 		super(source);
 		this.wine = wine;
 
