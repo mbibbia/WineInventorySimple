@@ -85,7 +85,6 @@ public class WineTableController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		wineTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
 		setColumnProperties();
 		loadWine();
 

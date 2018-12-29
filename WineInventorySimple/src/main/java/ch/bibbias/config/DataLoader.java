@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 
 import ch.bibbias.bean.Classification;
 import ch.bibbias.bean.Country;
+import ch.bibbias.bean.Producer;
 import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 import ch.bibbias.service.ClassificationService;
 import ch.bibbias.service.CountryService;
+import ch.bibbias.service.ProducerService;
 import ch.bibbias.service.RegionService;
 import ch.bibbias.service.WineService;
 import ch.bibbias.service.WineTypeService;
@@ -32,6 +34,9 @@ public class DataLoader implements ApplicationRunner {
 	private RegionService regionService;
 
 	@Autowired
+	private ProducerService producerService;
+
+	@Autowired
 	private WineService wineService;
 
 	@Autowired
@@ -46,6 +51,7 @@ public class DataLoader implements ApplicationRunner {
 		initClassifications();
 		initCountries();
 		initRegions();
+		initProducers();
 		initWine();
 
 	}
@@ -166,6 +172,35 @@ public class DataLoader implements ApplicationRunner {
 		region.setName("Zürich");
 		region.setCountry(country);
 		regionService.save(region);
+		
+		country = countryService.findByCode("IT");
+		region = new Region();
+		region.setName("Piemont");
+		region.setCountry(country);
+		regionService.save(region);
+		
+	}
+
+	private void initProducers() {
+
+		Producer producer;
+		Region region;
+		Country country;
+
+		country = countryService.findByCode("IT");
+		region = regionService.findByName("Piemont");
+		producer = new Producer();
+		producer.setName("Parusso");
+		producer.setCompany("Parusso Armando di Parusso F.lli Società Agricola");
+		producer.setAddressLine1("Loc. Bussia 55");
+		producer.setZipCode("12065");
+		producer.setPlace("Monforte d'Alba");
+		producer.setPhone("0039 173 78257");
+		producer.setEmail("info@parusso.com");
+		producer.setUrl("http://parusso.com/");
+		producer.setCountry(country);
+		producer.setRegion(region);
+		producerService.save(producer);
 
 	}
 

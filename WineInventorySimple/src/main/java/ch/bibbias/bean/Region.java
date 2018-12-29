@@ -19,7 +19,6 @@ public class Region {
 
 	private String name;
 
-	//@OneToOne(mappedBy = "regions", fetch = FetchType.LAZY)
 	@ManyToOne
 	private Country country;
 

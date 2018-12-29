@@ -99,7 +99,6 @@ public class WineDetailController implements Initializable {
 
 		@Override
 		public void onApplicationEvent(WineDetailsEvent event) {
-
 			wineId.setText(Long.toString(event.getWine().getId()));
 			name.setText(event.getWine().getName());
 			type.setValue(event.getWine().getType());
@@ -107,52 +106,32 @@ public class WineDetailController implements Initializable {
 			country.setValue(event.getWine().getCountry());
 			region.setValue(event.getWine().getRegion());
 			producer.setValue(event.getWine().getProducer());
-
 		}
 
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		type.setItems(loadTypes());
 		classification.setItems(loadClassifications());
 		country.setItems(loadCountries());
 		producer.setItems(loadProducers());
-
 	}
 
 	private ObservableList<WineType> loadTypes() {
-
-		ObservableList<WineType> types = FXCollections.observableArrayList(wineTypeService.findAll());
-
-		return types;
-
+		return FXCollections.observableArrayList(wineTypeService.findAll());
 	}
 
 	private ObservableList<Classification> loadClassifications() {
-
-		ObservableList<Classification> classifications = FXCollections
-				.observableArrayList(classificationService.findAll());
-
-		return classifications;
-
+		return FXCollections.observableArrayList(classificationService.findAll());
 	}
 
 	private ObservableList<Country> loadCountries() {
-
-		ObservableList<Country> countries = FXCollections.observableArrayList(countryService.findAll());
-
-		return countries;
-
+		return FXCollections.observableArrayList(countryService.findAll());
 	}
 
 	private ObservableList<Producer> loadProducers() {
-
-		ObservableList<Producer> producers = FXCollections.observableArrayList(producerService.findAll());
-
-		return producers;
-
+		return FXCollections.observableArrayList(producerService.findAll());
 	}
 
 	private String getName() {
@@ -199,10 +178,10 @@ public class WineDetailController implements Initializable {
 	@FXML
 	private void handleRegionClicked() {
 
-		ObservableList<Region> regions = FXCollections.observableArrayList(country.getValue().getRegions());
-
-		region.setItems(regions);
-
+		if (country.getValue() != null) {
+			ObservableList<Region> regions = FXCollections.observableArrayList(country.getValue().getRegions());
+			region.setItems(regions);
+		}
 	}
 
 	@FXML
