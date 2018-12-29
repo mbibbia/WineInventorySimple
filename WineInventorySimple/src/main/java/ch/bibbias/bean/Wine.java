@@ -32,7 +32,8 @@ public class Wine {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Region region;
 
-	private String producer;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Producer producer;
 
 	public long getId() {
 		return id;
@@ -82,11 +83,11 @@ public class Wine {
 		this.region = region;
 	}
 
-	public String getProducer() {
+	public Producer getProducer() {
 		return producer;
 	}
 
-	public void setProducer(String producer) {
+	public void setProducer(Producer producer) {
 		this.producer = producer;
 	}
 

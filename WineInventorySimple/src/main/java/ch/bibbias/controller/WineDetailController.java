@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Classification;
 import ch.bibbias.bean.Country;
+import ch.bibbias.bean.Producer;
 import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
@@ -19,6 +20,7 @@ import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.ClassificationService;
 import ch.bibbias.service.CountryService;
+import ch.bibbias.service.ProducerService;
 import ch.bibbias.service.WineService;
 import ch.bibbias.service.WineTypeService;
 import javafx.collections.FXCollections;
@@ -58,7 +60,7 @@ public class WineDetailController implements Initializable {
 	private ComboBox<Region> region;
 
 	@FXML
-	private ComboBox<String> producer;
+	private ComboBox<Producer> producer;
 
 	@FXML
 	private Button reset;
@@ -88,6 +90,9 @@ public class WineDetailController implements Initializable {
 
 	@Autowired
 	private CountryService countryService;
+
+	@Autowired
+	private ProducerService producerService;
 
 	@Component
 	class ShowWineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
@@ -142,10 +147,9 @@ public class WineDetailController implements Initializable {
 
 	}
 
-	private ObservableList<String> loadProducers() {
+	private ObservableList<Producer> loadProducers() {
 
-		ObservableList<String> producers = FXCollections.observableArrayList("", "Parusso", "Gérard Bertrand",
-				"Sciavenza");
+		ObservableList<Producer> producers = FXCollections.observableArrayList(producerService.findAll());
 
 		return producers;
 
@@ -171,7 +175,7 @@ public class WineDetailController implements Initializable {
 		return region.getValue();
 	}
 
-	private String getProducer() {
+	private Producer getProducer() {
 		return producer.getValue();
 	}
 
