@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
@@ -20,6 +22,14 @@
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                  <MenuItem fx:id="editWine" mnemonicParsing="false" onAction="#editWine" text="Edit" />
+                <MenuItem fx:id="deleteWines" mnemonicParsing="false" onAction="#deleteWines" text="Delete" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TableView>
    </children>
 </HBox>

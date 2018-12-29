@@ -1,6 +1,8 @@
 package ch.bibbias.controller;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,18 @@ import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.WineService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -149,5 +155,29 @@ public class WineTableController implements Initializable {
 			return cell;
 		}
 	};
+	
+	@FXML
+	void editWine(ActionEvent event) {
+		Wine wine = wineTable.getSelectionModel().getSelectedItem();
+		raiseEventShowWine(wine);
+		
+		
+	}
+
+	@FXML
+	void deleteWines(ActionEvent event) {
+		List<Wine> wines = wineTable.getSelectionModel().getSelectedItems();
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("Are you sure you want to delete selected?");
+		Optional<ButtonType> action = alert.showAndWait();
+
+		if (action.get() == ButtonType.OK)
+			wineService.deleteInBatch(wines);
+
+		loadWine();
+	}
 
 }
