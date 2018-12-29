@@ -48,7 +48,7 @@
 		},
 		{
 			"name": "wineGroup",
-			"orientation": "vertical",
+			"orientation": "horizontal",
 			"viewGroups": [
 				{
 					"type": "view",

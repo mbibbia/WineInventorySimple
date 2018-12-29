@@ -59,7 +59,17 @@
   <!-- Logging for Desktop -->
   <logger name="com.jeitziner.view.Desktop" level="DEBUG" />
   
+  <!-- Logging for ViewGroup -->
+  <logger name="com.jeitziner.view.ViewGroup" level="DEBUG" />
+  
+  <!-- Logging for DesktopTest -->
+  <logger name="com.jeitziner.test.desktop.DesktopTest" level="DEBUG" />
+  
   <!-- Logging for JsonObjectReader -->
   <logger name="com.jeitziner.json.JsonObjectReader" level="DEBUG" />
+  
+  <!-- Logging for JsonObjectReaderTest -->
+  <logger name="com.jeitziner.test.json.JsonObjectReader" level="DEBUG" />
+  
     
 </configuration>

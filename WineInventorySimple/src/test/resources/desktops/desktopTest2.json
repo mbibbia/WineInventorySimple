@@ -1,0 +1,74 @@
+{
+    "desktops": [
+        {
+            "name": "Desktop1",
+            "viewGroup": "group1"
+        }       
+    ],
+
+    "viewGroups": [
+        {
+            "name": "group1",
+            "orientation": "vertical",
+            "viewGroups": [
+                            {
+                                "type": "viewGroup",
+                                "name": "group2"
+                            },
+                            {
+                                "type": "viewGroup",
+                                "name": "group3"
+                            },
+                            {
+                                "type": "viewGroup",
+                                "name": "group4"
+                            }                            
+                          ]
+        },
+        {
+            "name": "group2",
+            "orientation": "vertical",
+            "viewGroups": [
+                            {
+                                "type": "view",
+                                "name": "view1"
+                            },
+                            {
+                                "type": "view",
+                                "name": "view2"
+                            }                            
+                          ]
+        },
+        {
+            "name": "group3",
+            "orientation": "vertical",
+            "viewGroups": [
+                            {
+                                "type": "view",
+                                "name": "view1"
+                            }
+                          ]
+        },
+        {
+            "name": "group4",
+            "orientation": "vertical",
+            "viewGroups": [
+                            {
+                                "type": "view",
+                                "name": "view1"
+                            }
+                          ]
+        }
+    ],
+
+    "views": [
+        {
+            "name": "view1",
+            "fxmlFile": "/fxml/dummy.fxml"
+        },
+        {
+            "name": "view2",
+            "fxmlFile": "/fxml/dummy.fxml"
+        }
+    ]
+}

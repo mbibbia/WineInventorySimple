@@ -2,10 +2,11 @@ package com.jeitziner.view;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -14,149 +15,40 @@ import org.slf4j.Logger;
 
 import com.jeitziner.json.JsonObjectReader;
 
-import ch.bibbias.view.FxmlLoader;
 import javafx.geometry.Orientation;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.Parent;
 
 /**
- * Usage of Composite pattern (Design Pattern, Gamma/Helm/Johnson/Vlissides)
- * to model a window having multiple subviews which are arranged in
- * horizontal and/or vertical SplitPane panes.
- * 
  * @author Christian Jeitziner
+ * 
+ * The Composite pattern (Design Pattern, Gamma/Helm/Johnson/Vlissides)
+ * is used to model a window having multiple sub-views which are arranged in
+ * horizontal and/or vertical SplitPane controls.
+
+ * A Desktop is a special kind of ViewGroup, it can have only one component,
+ * either a View or a ViewGroup. Check this in the method addComponent.
  *
  */
-
-interface Component {
-	Pane createPane(FxmlLoader loader);
-	String toString();
-}
-
-class ViewGroup implements Component {
-	private String name;
-	private String orientation;
-	protected List<Component> components;
-
-	public ViewGroup(String name, String orientation) {
-		this.name = name;
-		this.orientation = orientation;
-		this.components = new ArrayList<>();
-	}
-	
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("\nViewGroup: %s", getName()));
-		for (Component component: this.components) {
-			sb.append(String.format("%s", component.toString()));
-		}
-		return sb.toString();
-	}
-
-	String getName() {
-		return this.name;
-	}
-
-	String getOrientation() {
-		return this.orientation;
-	}
-
-	void setOrientation(String orientation) {
-		this.orientation = orientation;
-	}
-
-	public void addComponent(Component component) {
-		this.components.add(component);
-	}
-
-	public Pane createPane(FxmlLoader loader) {
-		if (this.components.size() > 1) {
-			final AnchorPane anchorPane = new AnchorPane();			
-			final SplitPane splitPane = new SplitPane();
-			AnchorPane.setTopAnchor(splitPane, 5.0);
-			AnchorPane.setLeftAnchor(splitPane, 5.0);
-			AnchorPane.setRightAnchor(splitPane, 5.0);
-			AnchorPane.setBottomAnchor(splitPane, 5.0);
-			
-			anchorPane.getChildren().add(splitPane);
-			if (this.getOrientation().toLowerCase().equals("horizontal")) {
-				splitPane.setOrientation(Orientation.HORIZONTAL);				
-			} else {
-				splitPane.setOrientation(Orientation.VERTICAL);				
-			}
-			for (Component component : this.components) {
-				final AnchorPane innerAnchorPane = new AnchorPane();
-				splitPane.getItems().add(innerAnchorPane);
-				Pane subPane = component.createPane(loader);
-				innerAnchorPane.getChildren().add(subPane);				
-				AnchorPane.setTopAnchor(subPane, 5.0);
-				AnchorPane.setLeftAnchor(subPane, 5.0);
-				AnchorPane.setRightAnchor(subPane, 5.0);
-				AnchorPane.setBottomAnchor(subPane, 5.0);				
-			}
-			return anchorPane;
-			
-		} else if (this.components.size() == 1) {
-			return this.components.get(0).createPane(loader);
-		}
-		return null;
-	}
-}
-
-class View implements Component {	
-	/**
-	 * A view can be identified by a unique name.
-	 */
-	private String name;
-	private String fxmlFile;
-
-	public View(String name, String fxmlFile) {
-		this.name = name;
-		this.fxmlFile = fxmlFile;
-	}
-	
-	public String toString() {
-		return String.format("\nView: %s %s", getName(), getFxmlFile());
-	}
-	
-	String getName() {
-		return this.name;
-	}
-
-	String getFxmlFile() {
-		return this.fxmlFile;
-	}
-
-	public Pane createPane(FxmlLoader loader) {
-		Pane pane = (Pane)loader.load(this.fxmlFile);
-		return pane;
-	}
-}
-
-public class Desktop {
+public class Desktop extends ViewGroup {
+	//--------------------------------------------------------------------------
+	// INSTANCE AND CLASS VARIABLES.
+	//--------------------------------------------------------------------------	
 	private static final Logger LOG = getLogger(Desktop.class);
-	private String name;
-	private ViewGroup rootGroup;
+	
+	private static boolean useTestGroupId = false;
+	private static int groupId = 0;
 
-	private Desktop(String name, ViewGroup rootGroup) {
-		this.name = name;
-		this.rootGroup = rootGroup;
+	//--------------------------------------------------------------------------
+	// CONSTRUCTORS
+	//--------------------------------------------------------------------------
+	private Desktop(String name) {
+		// We can assign an arbitrary orientation to the first group.
+		super(name, Orientation.HORIZONTAL);
 	}
 	
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("Desktop %s", getName()));
-		sb.append(String.format("%s", this.rootGroup.toString()));
-		return sb.toString();
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-
+	//--------------------------------------------------------------------------
+	// STATIC METHODS
+	//--------------------------------------------------------------------------	
+	/*
 	public static Desktop createDesktopFromJsonFile(String desktopName, String filePath) {
 		JsonObject rootObj = JsonObjectReader.getJsonObjectFromFile(filePath);
 		if (rootObj == null) {
@@ -174,8 +66,12 @@ public class Desktop {
 		}		
 		return Desktop.create(desktopName, rootObj);
 	}
+	*/
 
-
+	public static String createSpacer(char ch, int num) {		
+		return new String(new char[num]).replace('\0', ch);
+	}
+	
 	public static Map<String, Desktop> getDesktopsFromFile(String filePath) {
 		JsonObject rootObj = JsonObjectReader.getJsonObjectFromFile(filePath);
 		if (rootObj == null) {
@@ -187,20 +83,21 @@ public class Desktop {
 
 	
 	public static Map<String, Desktop> getDesktopsFromJsonObj(JsonObject rootObj) {
-		HashMap<String, Desktop> map = new HashMap<>();
+		HashMap<String, Desktop> desktopMap = new HashMap<>();
 
 		if (rootObj == null) {
 			LOG.error("Cannot create Desktop with nullObj");
-			return map;
+			return null;
 		}
 
-		// Read views from rootObj.
+		// Add all views to a map.
 		Map<String, View> viewMap = new HashMap<>();
 		JsonArray views = rootObj.getJsonArray("views");
 		if (views == null) {
-			LOG.error("No json field views exists.");
+			LOG.error("Json field 'views' does not exist.");
 			return null;
-		}
+		}		
+		LOG.debug(String.format("Number of views: %d", views.size()));		
 		for (int vi = 0; vi < views.size(); ++vi) {
 			JsonObject currentView = views.getJsonObject(vi);
 			String name = currentView.getString("name");
@@ -208,8 +105,27 @@ public class Desktop {
 			viewMap.put(name, new View(name, fxmlFile));
 		}
 		
-		JsonArray desktops = rootObj.getJsonArray("desktops");
+		// Add all viewGroups to a map
+		Map<String, JsonObject> viewGroupObjMap = new HashMap<>();
+		JsonArray viewsGroups = rootObj.getJsonArray("viewGroups");
+		if (viewsGroups == null) {
+			LOG.error("Json field 'viewGroups' does not exist.");
+			return null;
+		}		
+		LOG.debug(String.format("Number of viewGroups: %d", viewsGroups.size()));
+		for (int gi = 0; gi < viewsGroups.size(); ++gi) {
+			JsonObject currentViewGroup = viewsGroups.getJsonObject(gi);
+			String name = currentViewGroup.getString("name");
+			viewGroupObjMap.put(name, currentViewGroup);
+		}
+		
+		// Add all desktop objects = JSON objects to a map.
 		Map<String, JsonObject> desktopObjMap = new HashMap<>();
+		JsonArray desktops = rootObj.getJsonArray("desktops");
+		if (desktops == null) {
+			LOG.error("Json field 'desktops' does not exist.");
+			return null;
+		}		
 		for (int di = 0; di < desktops.size(); ++di) {
 			JsonObject currentDesktopObj = desktops.getJsonObject(di);
 			String name = currentDesktopObj.getString("name");
@@ -218,66 +134,96 @@ public class Desktop {
 
 		// Iterate over desktopObjMap
 		for (String name: desktopObjMap.keySet()) {
-			JsonObject desktopObj = desktopObjMap.get(name);
-			String rootGroupName = desktopObj.getString("viewGroup");
-
-			// Read all viewGroups for desktop. This is a pre-initialization
-			// step, the components list is not yet initialized.
+			JsonObject currentDesktopObj = desktopObjMap.get(name);
+			String viewGroupName = currentDesktopObj.getString("viewGroup");
+			
 			Map<String, ViewGroup> viewGroupMap = new HashMap<>();
-			JsonArray viewGroups = rootObj.getJsonArray("viewGroups");
 
+			// Get viewGroupObj from map
+			JsonObject viewGroupObj = viewGroupObjMap.get(viewGroupName);
+			if (viewGroupObj == null) {
+				LOG.warn(String.format("No view group found with name '%s'", viewGroupName));
+				continue;
+			}			
+			
+			JsonArray viewGroups = viewGroupObj.getJsonArray("viewGroups");
+			LOG.debug(String.format("Desktop %s. Number of viewsGroups: %d", name, viewGroups.size()));			
 			// If there are no viewGroups, ignore this desktop.
 			if (viewGroups.size() == 0) {
 				continue;
 			}
 			
-			ViewGroup rootViewGroup = null;
-
-			for (int vgi = 0; vgi < viewGroups.size(); ++vgi) {
-				JsonObject currentViewGroup = viewGroups.getJsonObject(vgi);
-				String groupName = currentViewGroup.getString("name");
-				String orientation = currentViewGroup.getString("orientation");
-				ViewGroup viewGroup = new ViewGroup(groupName, orientation);
-				if (groupName.equals(rootGroupName)) {
-					rootViewGroup = viewGroup; 
-				}
-				viewGroupMap.put(groupName, viewGroup);
-			}		
-
-			// It's important that we detect recursion. ignore a viewGroup,
-			// if it has not yet been initialized.
-			Map<String, ViewGroup> processedViewGroups = new HashMap<>();
-
-			// Read all viewGroups again to initialize rootViewGroup.
-			for (int vgi = 0; vgi < viewGroups.size(); ++vgi) {
-				JsonObject currentViewGroup = viewGroups.getJsonObject(vgi);
-				String groupName = currentViewGroup.getString("name");
-				ViewGroup viewGroup = viewGroupMap.get(groupName);
-
-				JsonArray subViewGroups = currentViewGroup.getJsonArray("viewGroups");
-				for (int svgi = 0; svgi < subViewGroups.size(); ++svgi) {
-					JsonObject currentSubViewGroup = subViewGroups.getJsonObject(svgi);
-					String type = currentSubViewGroup.getString("type");
-					String subViewGroupName = currentSubViewGroup.getString("name");
-					if (type.equals("view")) {
-						View view = viewMap.getOrDefault(subViewGroupName, null);
-						if (view != null) {
-							viewGroup.addComponent(view);
-						}
-					} else if (type.equals("viewGroup")) {
-						ViewGroup processedViewGroup = processedViewGroups.getOrDefault(subViewGroupName, null);
-						if (processedViewGroup != null) {
-							viewGroup.addComponent(processedViewGroup);
-						}
-					}
-				}
-				processedViewGroups.put(groupName, viewGroup);
-			}			
-			map.put(name, new Desktop(name, rootViewGroup));			
+			Set<String> processedViewGroupNames = new HashSet<String>(); 
+			ViewGroup viewGroup = Desktop.initializeViewGroup(viewGroupName,
+					                                          processedViewGroupNames,
+					                                          viewGroupObjMap,
+					                                          viewMap);
+			if (viewGroup != null) {
+				Desktop desktop = new Desktop(name);
+				desktop.addComponent(viewGroup);
+				desktopMap.put(name, desktop);
+			}
 		}
 
-		return map;
-	} 
+		return desktopMap;
+	}
+	
+	public static ViewGroup initializeViewGroup(String viewGroupName,
+			                                    Set<String> processedViewGroupNames, 
+			                                    Map<String, JsonObject> viewGroupObjMap,
+			                                    Map<String, View> viewMap) {
+		
+		if (processedViewGroupNames.contains(viewGroupName)) {
+			return null;
+		}
+		
+		JsonObject viewGroupObj = viewGroupObjMap.get(viewGroupName);
+		if (viewGroupObj == null) {
+			return null;
+		}
+		
+		String orientationStr = viewGroupObj.getString("orientation");		
+		Orientation orientation = ViewGroup.getOrientation(orientationStr);
+		ViewGroup viewGroup = new ViewGroup(viewGroupName, orientation);
+		
+		// We don't want to process viewGroupName again.
+		processedViewGroupNames.add(viewGroupName);		
+		JsonArray subViewGroups = viewGroupObj.getJsonArray("viewGroups");
+		if (subViewGroups.size() == 0) {
+			return null;
+		}
+		
+		boolean acceptViewGroup = false;
+		for (int svgi = 0; svgi < subViewGroups.size(); ++svgi) {
+			JsonObject currentSubViewGroup = subViewGroups.getJsonObject(svgi);
+			String type = currentSubViewGroup.getString("type");
+			String subViewGroupName = currentSubViewGroup.getString("name");
+			if (type.equals("view")) {
+				View view = viewMap.getOrDefault(subViewGroupName, null);
+				if (view != null) {
+					acceptViewGroup = true;
+					// Create a clone of the view.
+					View cloneView = new View(view.getName(), view.getFxmlFile());					
+					viewGroup.addComponent(cloneView);
+				}
+			} else if (type.equals("viewGroup")) {
+				ViewGroup subViewGroup = Desktop.initializeViewGroup(subViewGroupName,
+																	 processedViewGroupNames,
+																	 viewGroupObjMap,
+																	 viewMap);				
+				if (subViewGroup != null) {
+					acceptViewGroup = true;
+					viewGroup.addComponent(subViewGroup);
+				}			
+			}			
+		}
+
+		if (acceptViewGroup) {
+			return viewGroup;
+		}
+				
+		return null;
+	}
 
 	public static Desktop create(String desktopName, JsonObject rootObj) {
 		if (rootObj == null) {
@@ -327,7 +273,8 @@ public class Desktop {
 		for (int vgi = 0; vgi < viewGroups.size(); ++vgi) {
 			JsonObject currentViewGroup = viewGroups.getJsonObject(vgi);
 			String name = currentViewGroup.getString("name");
-			String orientation = currentViewGroup.getString("orientation");
+			String orientationStr = currentViewGroup.getString("orientation");
+			Orientation orientation = ViewGroup.getOrientation(orientationStr);			
 			ViewGroup viewGroup = new ViewGroup(name, orientation);
 			if (name.equals(rootGroupName)) {
 				rootViewGroup = viewGroup; 
@@ -365,13 +312,58 @@ public class Desktop {
 			processedViewGroups.put(name, viewGroup);
 		}		
 
-		return new Desktop(desktopName, rootViewGroup);
+		return new Desktop(desktopName);
 	}
 
-	public Pane createPane(FxmlLoader loader) {
-		if (this.rootGroup == null) {
-			return null;
-		}
-		return this.rootGroup.createPane(loader);
+	//--------------------------------------------------------------------------
+	// METHODS
+	//--------------------------------------------------------------------------
+	
+	public void addComponentLeft(Component component, boolean splitCurrentComponent) {
+		// Empty implementation, we cannot add a component to the left
+		// of a desktop.
 	}
+
+	/**
+	 * @return : Unique groupName, either ViewGroup_1, ViewGroup_2, ...
+	 *           or UUID.
+	 */
+	static String createGroupName() {
+		String returnValue;
+		
+		if (Desktop.getUseTestGroupId()) {
+			groupId += 1;
+			returnValue = String.format("ViewGroup_%d", groupId);
+		} else {
+			UUID uuid = UUID.randomUUID();
+			returnValue = uuid.toString();
+		}
+		
+		return returnValue;
+	}
+	
+	//--------------------------------------------------------------------------
+	// UTILITY METHODS
+	//--------------------------------------------------------------------------
+	public String toString() {
+		return toString(0);
+	}
+
+	public String toString(int indent) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%s", super.toString(indent)));
+		return sb.toString();
+	}
+
+	//--------------------------------------------------------------------------
+	// GETTER AND SETTER METHODS
+	//--------------------------------------------------------------------------	
+	static boolean getUseTestGroupId() {
+		return useTestGroupId;
+	}
+
+	static void setUseTestGroupId(boolean useTestGroupId) {
+		Desktop.useTestGroupId = useTestGroupId;
+	}
+
 }
