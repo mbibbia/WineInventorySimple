@@ -3,11 +3,11 @@ package ch.bibbias.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ch.bibbias.bean.WineType;
+import ch.bibbias.bean.Country;
 
 @Repository
-public interface WineTypeRepository extends JpaRepository<WineType, Long> {
+public interface CountryRepository extends JpaRepository<Country, Long> {
 
-	WineType findByName(String name);
+	Country findByCode(String code);
 
 }

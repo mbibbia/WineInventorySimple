@@ -48,7 +48,7 @@
 		},
 		{
 			"name": "wineGroup",
-			"orientation": "vertical",
+			"orientation": "horizontal",
 			"viewGroups": [
 				{
 					"type": "view",
@@ -119,6 +119,10 @@
 		{
 			"name": "wineDetail",
 			"fxmlFile": "/fxml/WineDetail.fxml"
+		},
+		{
+			"name": "root",
+			"fxmlFile": "/fxml/Root.fxml"
 		}
 	]
 }

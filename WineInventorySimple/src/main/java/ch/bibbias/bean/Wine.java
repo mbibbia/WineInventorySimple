@@ -2,9 +2,11 @@ package ch.bibbias.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,13 +20,16 @@ public class Wine {
 
 	private String name;
 
-	private String type;
+	@OneToOne(fetch = FetchType.EAGER)
+	private WineType type;
 
 	private String classification;
 
-	private String country;
+	@OneToOne(fetch = FetchType.EAGER)
+	private Country country;
 
-	private String region;
+	@OneToOne(fetch = FetchType.EAGER)
+	private Region region;
 
 	private String producer;
 
@@ -44,11 +49,11 @@ public class Wine {
 		this.name = name;
 	}
 
-	public String getType() {
+	public WineType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(WineType type) {
 		this.type = type;
 	}
 
@@ -60,19 +65,19 @@ public class Wine {
 		this.classification = classification;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
-	public String getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 

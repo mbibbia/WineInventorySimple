@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
+import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
@@ -42,7 +43,7 @@ public class WineTableController implements Initializable {
 	private TableColumn<Wine, String> colName;
 
 	@FXML
-	private TableColumn<Wine, String> colType;
+	private TableColumn<Wine, WineType> colType;
 
 	@FXML
 	private TableColumn<Wine, String> colClassification;
@@ -75,8 +76,7 @@ public class WineTableController implements Initializable {
 
 		@Override
 		public void onApplicationEvent(SaveWineEvent event) {
-			wineList.add(event.getWine());
-
+			loadWine();
 		}
 
 	}
@@ -86,7 +86,12 @@ public class WineTableController implements Initializable {
 
 		wineTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-		// setColumnProperties
+		setColumnProperties();
+		loadWine();
+
+	}
+
+	private void setColumnProperties() {
 		colWineId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		colType.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -95,13 +100,12 @@ public class WineTableController implements Initializable {
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
 		colProducer.setCellValueFactory(new PropertyValueFactory<>("producer"));
 		colEdit.setCellFactory(cellFactory);
+	}
 
-		// loadWineDetails
+	private void loadWine() {
 		wineList.clear();
 		wineList.addAll(wineService.findAll());
-
 		wineTable.setItems(wineList);
-
 	}
 
 	private void raiseEventShowWine(final Wine wine) {

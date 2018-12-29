@@ -12,41 +12,46 @@ import ch.bibbias.service.WineTypeService;
 public class WineTypeServiceImpl implements WineTypeService {
 
 	@Autowired
-	private WineTypeRepository wineTypeRepository;
+	private WineTypeRepository repository;
 
 	@Override
 	public WineType save(WineType entity) {
-		return wineTypeRepository.save(entity);
+		return repository.save(entity);
 	}
 
 	@Override
 	public WineType update(WineType entity) {
-		return wineTypeRepository.save(entity);
+		return repository.save(entity);
 	}
 
 	@Override
 	public void delete(WineType entity) {
-		wineTypeRepository.delete(entity);
+		repository.delete(entity);
 	}
 
 	@Override
 	public void delete(Long id) {
-		wineTypeRepository.deleteById(id);
+		repository.deleteById(id);
 	}
 
 	@Override
 	public void deleteInBatch(List<WineType> entities) {
-		wineTypeRepository.deleteInBatch(entities);
+		repository.deleteInBatch(entities);
 	}
 
 	@Override
 	public WineType find(Long id) {
-		return wineTypeRepository.getOne(id);
+		return repository.getOne(id);
 	}
 
 	@Override
 	public List<WineType> findAll() {
-		return wineTypeRepository.findAll();
+		return repository.findAll();
+	}
+
+	@Override
+	public WineType findByName(String name) {
+		return repository.findByName(name);
 	}
 
 }

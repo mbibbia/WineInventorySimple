@@ -8,4 +8,6 @@ import ch.bibbias.generic.GenericService;
 @Service
 public interface WineTypeService extends GenericService<WineType> {
 
+	WineType findByName(String name);
+
 }

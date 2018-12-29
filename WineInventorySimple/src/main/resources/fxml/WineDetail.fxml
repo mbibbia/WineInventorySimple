@@ -59,7 +59,7 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </ComboBox>
-            <ComboBox fx:id="region" layoutX="40.0" layoutY="242.0" prefWidth="246.0" promptText="Region">
+            <ComboBox fx:id="region" layoutX="40.0" layoutY="242.0" onMouseClicked="#handleRegionClicked" prefWidth="246.0" promptText="Region">
                <VBox.margin>
                   <Insets left="25.0" />
                </VBox.margin>

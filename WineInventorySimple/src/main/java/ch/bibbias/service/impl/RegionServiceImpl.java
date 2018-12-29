@@ -4,28 +4,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.bibbias.bean.Wine;
-import ch.bibbias.repository.WineRepository;
-import ch.bibbias.service.WineService;
+import ch.bibbias.bean.Region;
+import ch.bibbias.repository.RegionRepository;
+import ch.bibbias.service.RegionService;
 
 @Component
-public class WineServiceImpl implements WineService {
+public class RegionServiceImpl implements RegionService {
 
 	@Autowired
-	private WineRepository repository;
+	private RegionRepository repository;
 
 	@Override
-	public Wine save(Wine entity) {
+	public Region save(Region entity) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public Wine update(Wine entity) {
+	public Region update(Region entity) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public void delete(Wine entity) {
+	public void delete(Region entity) {
 		repository.delete(entity);
 	}
 
@@ -35,17 +35,17 @@ public class WineServiceImpl implements WineService {
 	}
 
 	@Override
-	public void deleteInBatch(List<Wine> entities) {
+	public void deleteInBatch(List<Region> entities) {
 		repository.deleteInBatch(entities);
 	}
 
 	@Override
-	public Wine find(Long id) {
+	public Region find(Long id) {
 		return repository.getOne(id);
 	}
 
 	@Override
-	public List<Wine> findAll() {
+	public List<Region> findAll() {
 		return repository.findAll();
 	}
 
