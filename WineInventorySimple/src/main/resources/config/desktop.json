@@ -5,6 +5,10 @@
 			"viewGroup": "wineGroup"
 		},
 		{
+			"name": "Desktop Country",
+			"viewGroup": "countryGroup"
+		},
+		{
 			"name": "Desktop Wine2",
 			"viewGroup": "wineGroup2"
 		},
@@ -57,6 +61,20 @@
 				{
 					"type": "view",
 					"name": "wineTable"
+				}
+			]
+		},
+		{
+			"name": "countryGroup",
+			"orientation": "horizontal",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "countryDetail"
+				},
+				{
+					"type": "view",
+					"name": "countryTable"
 				}
 			]
 		},
@@ -119,6 +137,14 @@
 		{
 			"name": "wineDetail",
 			"fxmlFile": "/fxml/WineDetail.fxml"
+		},
+		{
+			"name": "countryTable",
+			"fxmlFile": "/fxml/CountryTable.fxml"
+		},
+		{
+			"name": "countryDetail",
+			"fxmlFile": "/fxml/CountryDetail.fxml"
 		},
 		{
 			"name": "root",

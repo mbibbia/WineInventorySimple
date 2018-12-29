@@ -72,10 +72,6 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
-	@Lazy
-	@Autowired
-	private WineTableController wineTableController;
-
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 
