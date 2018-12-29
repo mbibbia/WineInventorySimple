@@ -6,7 +6,7 @@
 
 <HBox prefHeight="383.0" prefWidth="746.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.WineTableController">
    <children>
-      <TableView fx:id="wineTable" prefHeight="300.0" prefWidth="679.0" tableMenuButtonVisible="true">
+      <TableView fx:id="wineTable" prefHeight="383.0" prefWidth="748.0" tableMenuButtonVisible="true">
          <columns>
             <TableColumn fx:id="colWineId" maxWidth="700.0" prefWidth="20.0" text="ID" />
             <TableColumn fx:id="colName" maxWidth="4000.0" prefWidth="75.0" text="Name" />
