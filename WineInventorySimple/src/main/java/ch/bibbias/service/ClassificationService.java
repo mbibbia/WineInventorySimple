@@ -8,4 +8,6 @@ import ch.bibbias.generic.GenericService;
 @Service
 public interface ClassificationService extends GenericService<Classification> {
 
+	Classification findByName(String name);
+	
 }

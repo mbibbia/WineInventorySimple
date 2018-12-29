@@ -136,7 +136,7 @@ public class WineController implements Initializable {
 			Wine wine = new Wine();
 			wine.setName(getName());
 			wine.setType(getType());
-			wine.setClassification(getClassification());
+			//wine.setClassification(getClassification());
 			//wine.setCountry(getCountry());
 			//wine.setRegion(getRegion());
 			wine.setProducer(getProducer());
@@ -149,7 +149,7 @@ public class WineController implements Initializable {
 			Wine wine = wineService.find(Long.parseLong(wineId.getText()));
 			wine.setName(getName());
 			wine.setType(getType());
-			wine.setClassification(getClassification());
+			//wine.setClassification(getClassification());
 			//wine.setCountry(getCountry());
 			//wine.setRegion(getRegion());
 			wine.setProducer(getProducer());
@@ -251,7 +251,7 @@ public class WineController implements Initializable {
 					wineId.setText(Long.toString(wine.getId()));
 					name.setText(wine.getName());
 					//type.setValue(wine.getType());
-					classification.setValue(wine.getClassification());
+					//classification.setValue(wine.getClassification());
 					//country.setValue(wine.getCountry());
 					//region.setValue(wine.getRegion());
 					producer.setValue(wine.getProducer());

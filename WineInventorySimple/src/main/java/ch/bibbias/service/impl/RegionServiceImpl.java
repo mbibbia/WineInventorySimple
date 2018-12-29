@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ch.bibbias.bean.Country;
 import ch.bibbias.bean.Region;
 import ch.bibbias.repository.RegionRepository;
 import ch.bibbias.service.RegionService;
@@ -47,6 +48,16 @@ public class RegionServiceImpl implements RegionService {
 	@Override
 	public List<Region> findAll() {
 		return repository.findAll();
+	}
+
+	@Override
+	public Region findByName(String name) {
+		return repository.findByName(name);
+	}
+
+	@Override
+	public List<Region> findByCountry(Country country) {
+		return repository.findByCountry(country);
 	}
 
 }

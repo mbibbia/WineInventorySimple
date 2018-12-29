@@ -4,7 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ch.bibbias.bean.Classification;
+import ch.bibbias.bean.Country;
+import ch.bibbias.bean.Producer;
+import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
+import ch.bibbias.bean.WineType;
 import ch.bibbias.repository.WineRepository;
 import ch.bibbias.service.WineService;
 
@@ -47,6 +52,31 @@ public class WineServiceImpl implements WineService {
 	@Override
 	public List<Wine> findAll() {
 		return repository.findAll();
+	}
+
+	@Override
+	public List<Wine> findByCountry(Country country) {
+		return repository.findByCountry(country);
+	}
+
+	@Override
+	public List<Wine> findByRegion(Region region) {
+		return repository.findByRegion(region);
+	}
+
+	@Override
+	public List<Wine> findByClassification(Classification classification) {
+		return repository.findByClassification(classification);
+	}
+
+	@Override
+	public List<Wine> findByType(WineType wineType) {
+		return repository.findByType(wineType);
+	}
+
+	@Override
+	public List<Wine> findByProducer(Producer producer) {
+		return repository.findByProducer(producer);
 	}
 
 }

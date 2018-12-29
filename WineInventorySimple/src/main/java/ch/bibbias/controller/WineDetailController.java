@@ -49,7 +49,7 @@ public class WineDetailController implements Initializable {
 	private ComboBox<WineType> type;
 
 	@FXML
-	private ComboBox<String> classification;
+	private ComboBox<Classification> classification;
 
 	@FXML
 	private ComboBox<Country> country;
@@ -125,14 +125,10 @@ public class WineDetailController implements Initializable {
 
 	}
 
-	private ObservableList<String> loadClassifications() {
+	private ObservableList<Classification> loadClassifications() {
 
-		ObservableList<String> classifications = FXCollections.observableArrayList();
-
-		classifications.add("");
-		for (Classification c : classificationService.findAll()) {
-			classifications.add(c.toString());
-		}
+		ObservableList<Classification> classifications = FXCollections
+				.observableArrayList(classificationService.findAll());
 
 		return classifications;
 
@@ -163,7 +159,7 @@ public class WineDetailController implements Initializable {
 		return type.getValue();
 	}
 
-	private String getClassification() {
+	private Classification getClassification() {
 		return classification.getValue();
 	}
 

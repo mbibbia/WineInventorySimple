@@ -20,15 +20,16 @@ public class Wine {
 
 	private String name;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	private WineType type;
 
-	private String classification;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Classification classification;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	private Country country;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	private Region region;
 
 	private String producer;
@@ -57,11 +58,11 @@ public class Wine {
 		this.type = type;
 	}
 
-	public String getClassification() {
+	public Classification getClassification() {
 		return classification;
 	}
 
-	public void setClassification(String classification) {
+	public void setClassification(Classification classification) {
 		this.classification = classification;
 	}
 

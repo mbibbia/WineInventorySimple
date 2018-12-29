@@ -10,4 +10,6 @@ public interface CountryService extends GenericService<Country> {
 
 	Country findByCode(String code);
 
+	Country findByName(String name);
+
 }

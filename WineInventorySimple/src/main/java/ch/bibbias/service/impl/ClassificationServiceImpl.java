@@ -49,4 +49,9 @@ public class ClassificationServiceImpl implements ClassificationService {
 		return repository.findAll();
 	}
 
+	@Override
+	public Classification findByName(String name) {
+		return repository.findByName(name);
+	}
+
 }

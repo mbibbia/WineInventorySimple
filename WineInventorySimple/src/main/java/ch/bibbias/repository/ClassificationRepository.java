@@ -8,4 +8,6 @@ import ch.bibbias.bean.Classification;
 @Repository
 public interface ClassificationRepository extends JpaRepository<Classification, Long> {
 
+	Classification findByName(String name);
+
 }
