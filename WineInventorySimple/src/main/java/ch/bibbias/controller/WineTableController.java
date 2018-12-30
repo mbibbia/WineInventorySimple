@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import ch.bibbias.bean.Classification;
+import ch.bibbias.bean.Country;
+import ch.bibbias.bean.Producer;
+import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
@@ -52,16 +56,16 @@ public class WineTableController implements Initializable {
 	private TableColumn<Wine, WineType> colType;
 
 	@FXML
-	private TableColumn<Wine, String> colClassification;
+	private TableColumn<Wine, Classification> colClassification;
 
 	@FXML
-	private TableColumn<Wine, String> colCountry;
+	private TableColumn<Wine, Country> colCountry;
 
 	@FXML
-	private TableColumn<Wine, String> colRegion;
+	private TableColumn<Wine, Region> colRegion;
 
 	@FXML
-	private TableColumn<Wine, String> colProducer;
+	private TableColumn<Wine, Producer> colProducer;
 	@FXML
 	private TableColumn<Wine, Boolean> colEdit;
 

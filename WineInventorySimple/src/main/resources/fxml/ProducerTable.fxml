@@ -21,8 +21,8 @@
             <TableColumn fx:id="colFax" maxWidth="4000.0" prefWidth="60.0" text="Fax" />
             <TableColumn fx:id="colEmail" maxWidth="4000.0" prefWidth="60.0" text="E-Mail" />
             <TableColumn fx:id="colUrl" maxWidth="4000.0" prefWidth="60.0" text="Website" />
+            <TableColumn fx:id="colCountry" maxWidth="4000.0" prefWidth="75.0" text="Country" />
             <TableColumn fx:id="colRegion" maxWidth="4000.0" prefWidth="75.0" text="Region" />
-            <TableColumn fx:id="colProducer" maxWidth="6000.0" prefWidth="130.0" text="Producer" />
             <TableColumn fx:id="colEdit" maxWidth="3500.0" prefWidth="75.0" text="Edit" />
          </columns>
          <columnResizePolicy>
@@ -31,8 +31,8 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                  <MenuItem fx:id="editWine" mnemonicParsing="false" onAction="#editWine" text="Edit" />
-                <MenuItem fx:id="deleteWines" mnemonicParsing="false" onAction="#deleteWines" text="Delete" />
+                  <MenuItem fx:id="editProducer" mnemonicParsing="false" onAction="#editProducer" text="Edit" />
+                <MenuItem fx:id="deleteProducers" mnemonicParsing="false" onAction="#deleteProducers" text="Delete" />
               </items>
             </ContextMenu>
          </contextMenu>

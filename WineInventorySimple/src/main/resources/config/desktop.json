@@ -21,6 +21,10 @@
 			"viewGroup": "wineTypeGroup"
 		},
 		{
+			"name": "Desktop Producer",
+			"viewGroup": "producerGroup"
+		},
+		{
 			"name": "Desktop Wine2",
 			"viewGroup": "wineGroup2"
 		},
@@ -133,6 +137,20 @@
 			]
 		},
 		{
+			"name": "producerGroup",
+			"orientation": "vertical",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "producerDetail"
+				},
+				{
+					"type": "view",
+					"name": "producerTable"
+				}
+			]
+		},
+		{
 			"name": "wineGroup2",
 			"orientation": "vertical",
 			"viewGroups": [
@@ -223,6 +241,14 @@
 		{
 			"name": "wineTypeDetail",
 			"fxmlFile": "/fxml/WineTypeDetail.fxml"
+		},
+		{
+			"name": "producerTable",
+			"fxmlFile": "/fxml/ProducerTable.fxml"
+		},
+		{
+			"name": "producerDetail",
+			"fxmlFile": "/fxml/ProducerDetail.fxml"
 		},
 		{
 			"name": "root",
