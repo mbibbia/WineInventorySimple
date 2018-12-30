@@ -23,46 +23,16 @@
 		{
 			"name": "Desktop Producer",
 			"viewGroup": "producerGroup"
-		},
-		{
-			"name": "Desktop Wine2",
-			"viewGroup": "wineGroup2"
-		},
-		{
-			"name": "Desktop 1",
-			"viewGroup": "group1"
-		},
-		{
-			"name": "Desktop 2",
-			"viewGroup": "group1"
 		}
 	],
 	"viewGroups": [
 		{
-			"name": "group11",
-			"orientation": "vertical",
-			"viewGroups": [
-				{
-					"type": "view",
-					"name": "dummyViewOne"
-				},
-				{
-					"type": "view",
-					"name": "dummyViewTwo"
-				}
-			]
-		},
-		{
-			"name": "group21",
+			"name": "rootGroup",
 			"orientation": "horizontal",
 			"viewGroups": [
 				{
 					"type": "view",
-					"name": "dummyViewOne"
-				},
-				{
-					"type": "view",
-					"name": "dummyViewTwo"
+					"name": "root"
 				}
 			]
 		},
@@ -149,58 +119,12 @@
 					"name": "producerTable"
 				}
 			]
-		},
-		{
-			"name": "wineGroup2",
-			"orientation": "vertical",
-			"viewGroups": [
-				{
-					"type": "view",
-					"name": "wine2"
-				}
-			]
-		},
-		{
-			"name": "group1",
-			"orientation": "vertical",
-			"viewGroups": [
-				{
-					"type": "viewGroup",
-					"name": "group11"
-				},
-				{
-					"type": "viewGroup",
-					"name": "group21"
-				}
-			]
-		},
-		{
-			"name": "group2",
-			"orientation": "vertical",
-			"viewGroups": [
-				{
-					"type": "view",
-					"name": "dummyViewOne"
-				}
-			]
 		}
 	],
 	"views": [
 		{
-			"name": "dummyViewOne",
-			"fxmlFile": "/fxml/DummyViewOne.fxml"
-		},
-		{
-			"name": "dummyViewTwo",
-			"fxmlFile": "/fxml/DummyViewTwo.fxml"
-		},
-		{
 			"name": "wine",
 			"fxmlFile": "/fxml/Wine.fxml"
-		},
-		{
-			"name": "wine2",
-			"fxmlFile": "/fxml/Wine2.fxml"
 		},
 		{
 			"name": "wineTable",
