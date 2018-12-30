@@ -9,6 +9,18 @@
 			"viewGroup": "countryGroup"
 		},
 		{
+			"name": "Desktop Region",
+			"viewGroup": "regionGroup"
+		},
+		{
+			"name": "Desktop Classification",
+			"viewGroup": "classificationGroup"
+		},
+		{
+			"name": "Desktop Wine Type",
+			"viewGroup": "wineTypeGroup"
+		},
+		{
 			"name": "Desktop Wine2",
 			"viewGroup": "wineGroup2"
 		},
@@ -79,6 +91,48 @@
 			]
 		},
 		{
+			"name": "regionGroup",
+			"orientation": "vertical",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "regionDetail"
+				},
+				{
+					"type": "view",
+					"name": "regionTable"
+				}
+			]
+		},
+		{
+			"name": "classificationGroup",
+			"orientation": "vertical",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "classificationDetail"
+				},
+				{
+					"type": "view",
+					"name": "classificationTable"
+				}
+			]
+		},
+		{
+			"name": "wineTypeGroup",
+			"orientation": "vertical",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "wineTypeDetail"
+				},
+				{
+					"type": "view",
+					"name": "wineTypeTable"
+				}
+			]
+		},
+		{
 			"name": "wineGroup2",
 			"orientation": "vertical",
 			"viewGroups": [
@@ -145,6 +199,30 @@
 		{
 			"name": "countryDetail",
 			"fxmlFile": "/fxml/CountryDetail.fxml"
+		},
+		{
+			"name": "regionTable",
+			"fxmlFile": "/fxml/RegionTable.fxml"
+		},
+		{
+			"name": "regionDetail",
+			"fxmlFile": "/fxml/RegionDetail.fxml"
+		},
+		{
+			"name": "classificationTable",
+			"fxmlFile": "/fxml/ClassificationTable.fxml"
+		},
+		{
+			"name": "classificationDetail",
+			"fxmlFile": "/fxml/ClassificationDetail.fxml"
+		},
+		{
+			"name": "wineTypeTable",
+			"fxmlFile": "/fxml/WineTypeTable.fxml"
+		},
+		{
+			"name": "wineTypeDetail",
+			"fxmlFile": "/fxml/WineTypeDetail.fxml"
 		},
 		{
 			"name": "root",

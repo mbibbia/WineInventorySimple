@@ -45,7 +45,7 @@ public class Main extends Application {
 	 */
 
 	protected void displayInitialScene() {
-		stageManager.switchSceneByName("Desktop Country");
+		stageManager.switchSceneByName("Desktop Wine Type");
 
 	}
 

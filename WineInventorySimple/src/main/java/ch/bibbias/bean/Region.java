@@ -2,6 +2,7 @@ package ch.bibbias.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ public class Region {
 
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Country country;
 
 	public long getId() {

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.ProducerDetailController">
+   <children>
+      <VBox prefHeight="571.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css">
+         <children>
+            <Label text="Producer Detail" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="30.0" prefWidth="265.0">
+               <children>
+                  <Label text="Producer ID - " textFill="#f8f7f7">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="producerId">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+            </HBox>
+            <TextField fx:id="name" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Name" text="Name">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="company" layoutX="40.0" layoutY="130.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Name" text="Company">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="addressLine1" layoutX="40.0" layoutY="170.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Address Line 1" text="Address Line 1">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="addressLine2" layoutX="15.0" layoutY="210.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Address Line 2" text="Address Line 2">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="zipCode" layoutX="40.0" layoutY="250.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Zip Code" text="Zip Code">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="place" layoutX="15.0" layoutY="290.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Place" text="Place">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="phone" layoutX="40.0" layoutY="330.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Phone" text="Phone">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="fax" layoutX="15.0" layoutY="370.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Fax" text="Fax">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="email" layoutX="15.0" layoutY="410.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="E-Mail" text="E-Mail">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="url" layoutX="15.0" layoutY="436.0" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Website" text="Website">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </TextField>
+            <ComboBox fx:id="country" layoutX="40.0" layoutY="206.0" prefWidth="246.0" promptText="Country">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="region" layoutX="40.0" layoutY="242.0" onMouseClicked="#handleRegionClicked" prefWidth="246.0" promptText="Region">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+            </ComboBox>
+            <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+               <children>
+                  <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="saveProducer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveProducer" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                     </effect>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="110.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.CountryDetailController">
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.WineTypeDetailController">
    <children>
       <VBox prefHeight="571.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css">
          <children>
-            <Label text="Country Detail" textFill="WHITE">
+            <Label text="Wine Type Detail" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -23,12 +23,12 @@
             </Label>
             <HBox prefHeight="30.0" prefWidth="265.0">
                <children>
-                  <Label text="Country ID - " textFill="#f8f7f7">
+                  <Label text="Wine Type ID - " textFill="#f8f7f7">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="countryId">
+                  <Label fx:id="wineTypeId">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -38,11 +38,6 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </HBox>
-            <TextField fx:id="code" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Code">
-               <VBox.margin>
-                  <Insets left="25.0" right="25.0" />
-               </VBox.margin>
-            </TextField>
             <TextField fx:id="name" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Name">
                <VBox.margin>
                   <Insets left="25.0" right="25.0" />
@@ -55,7 +50,7 @@
                         <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
                      </effect>
                   </Button>
-                  <Button fx:id="saveCountry" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveCountry" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                  <Button fx:id="saveWineType" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveWineType" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
