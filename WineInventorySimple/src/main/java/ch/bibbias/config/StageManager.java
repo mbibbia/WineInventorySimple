@@ -2,6 +2,7 @@ package ch.bibbias.config;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -25,17 +26,19 @@ public class StageManager {
 	 * Read "desktop.json" file and create all Desktop instances. 
 	 * Store Desktop instances in a map, key = desktop name
 	 */
-	private final Map<String, Desktop> desktopMap;
+	private Map<String, Desktop> desktopMap;
 
 	public StageManager(SpringFXMLLoader springFXMLLoader, Stage stage) {
 		this.springFXMLLoader = springFXMLLoader;
 		this.primaryStage = stage;
+	}
 
-		// load all configures desktops from json file.
-		LOG.info("Working Directory = " + System.getProperty("user.dir"));
-		String jsonFilePath = "src/main/resources/config/desktop.json";
-		LOG.info("Read desktop config from: " + jsonFilePath);
-		this.desktopMap = Desktop.getDesktopsFromFile(jsonFilePath);
+	/**
+	 * @param is : The input stream is used to initialize the desktop map
+	 *             from a json file.
+	 */
+	public void init(InputStream is) {
+		this.desktopMap = Desktop.getDesktopsFromInputStream(is);
 	}
 	
 	public void switchSceneByName(String desktopName) {

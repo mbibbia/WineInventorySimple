@@ -2,18 +2,14 @@ package ch.bibbias.config;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 
 /**
  * @author Christian Jeitziner
- *
- */
-/**
- * @author christian
  *
  */
 public class AppProperties {
@@ -104,14 +100,14 @@ public class AppProperties {
 	 * 
 	 * @param propFilePath : The path to the .properties file.
 	 */
-	public static void init(String propFilePath) {
+	public static void init(InputStream propertiesStream) {
 		Properties prop = new Properties();
 		try {
-			LOG.info(String.format("Load properties file: %s", propFilePath));
-		    prop.load(new FileInputStream(propFilePath));
+			LOG.info(String.format("Load properties file: %s", propertiesStream.toString()));
+		    prop.load(propertiesStream);
 		} 
 		catch (IOException ex) {
-			LOG.error(String.format("Properties file not found: %s", propFilePath));
+			LOG.error(String.format("Properties file not found: %s", propertiesStream.toString()));
 		    ex.printStackTrace();
 		}
 		

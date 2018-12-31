@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.Resource;
 
 import ch.bibbias.config.AppProperties;
 import ch.bibbias.config.StageManager;
@@ -17,8 +18,6 @@ public class Main extends Application {
 	protected StageManager stageManager;
 
 	public static void main(final String[] args) {
-		// Explicitly initialize singletons to avoid threading issues.
-		AppProperties.init("src/main/resources/application.properties");
 		Application.launch(args);
 	}
 
@@ -29,9 +28,22 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		stageManager = springContext.getBean(StageManager.class, stage);
-		displayInitialScene();
+		Resource appProperties = springContext.getResource("classpath:application.properties");
 
+		// Explicitly initialize singletons to avoid threading issues.
+		AppProperties.init(appProperties.getInputStream());
+
+		stageManager = springContext.getBean(StageManager.class, stage);
+
+		Resource desktopProperties = springContext.getResource("classpath:config/desktop.json");
+		stageManager.init(desktopProperties.getInputStream());
+
+		// Explicitly initialize singletons to avoid threading issues.
+		AppProperties.init(appProperties.getInputStream());
+
+		stageManager = springContext.getBean(StageManager.class, stage);
+
+		displayInitialScene();
 	}
 
 	@Override

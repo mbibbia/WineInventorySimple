@@ -2,6 +2,7 @@ package com.jeitziner.view;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,6 +35,10 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------	
 	private static final Logger LOG = getLogger(Desktop.class);
 	
+	/**
+	 * If useTestGroupId = false, a unique view group name can be created,
+	 * otherwise a constant groupId is used.
+	 */
 	private boolean useTestGroupId = false;
 	private int groupId = 0;
 
@@ -48,10 +53,27 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------
 	// STATIC METHODS
 	//--------------------------------------------------------------------------	
-	public static String createSpacer(char ch, int num) {		
+	public static String createSpacer(char ch, int num) {
 		return new String(new char[num]).replace('\0', ch);
 	}
+
+	/**
+	 * @param fileStream : The desktops are read from this filestream.
+	 * @return a map key = String, value = Desktop object
+	 */
+	public static Map<String, Desktop> getDesktopsFromInputStream(InputStream fileStream) {
+		JsonObject rootObj = JsonObjectReader.getJsonObjectFromInputStream(fileStream);
+		if (rootObj == null) {
+			LOG.error("JsonFile: rootObj is null");
+			return null;
+		}
+		return Desktop.getDesktopsFromJsonObj(rootObj);
+	}
 	
+	/**
+	 * @param filePath : The desktops are read from a file with this filepath.
+	 * @return a map key = String, value = Desktop object
+	 */
 	public static Map<String, Desktop> getDesktopsFromFile(String filePath) {
 		JsonObject rootObj = JsonObjectReader.getJsonObjectFromFile(filePath);
 		if (rootObj == null) {
@@ -60,8 +82,11 @@ public class Desktop extends ViewGroup {
 		}		
 		return Desktop.getDesktopsFromJsonObj(rootObj);
 	}
-
 	
+	/**
+	 * @param rootObj : The desktops are read from the JSON object rootObj
+	 * @return a map key = String, value = Desktop object
+	 */
 	public static Map<String, Desktop> getDesktopsFromJsonObj(JsonObject rootObj) {
 		HashMap<String, Desktop> desktopMap = new HashMap<>();
 
@@ -148,7 +173,16 @@ public class Desktop extends ViewGroup {
 		return desktopMap;
 	}
 	
-	public static ViewGroup initializeViewGroup(String viewGroupName,
+	/**
+	 * Private method to initialize the viewGroups from a Json object. The method
+	 * is called recursively.
+	 * @param viewGroupName
+	 * @param processedViewGroupNames
+	 * @param viewGroupObjMap
+	 * @param viewMap
+	 * @return
+	 */
+	private static ViewGroup initializeViewGroup(String viewGroupName,
 			                                    Set<String> processedViewGroupNames, 
 			                                    Map<String, JsonObject> viewGroupObjMap,
 			                                    Map<String, View> viewMap) {
@@ -205,6 +239,12 @@ public class Desktop extends ViewGroup {
 		return null;
 	}
 
+	/**
+	 * Creates one desktop object from a JSON object.
+	 * @param desktopName : name of the desktop
+	 * @param rootObj : JSON object representing one or more desktops.
+	 * @return an instance of Desktop
+	 */
 	public static Desktop create(String desktopName, JsonObject rootObj) {
 		if (rootObj == null) {
 			System.out.println("Cannot create Desktop with nullObj");
@@ -298,11 +338,6 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------
 	// METHODS
 	//--------------------------------------------------------------------------
-	
-	public void addComponentLeft(Component component, boolean splitCurrentComponent) {
-		// Empty implementation, we cannot add a component to the left
-		// of a desktop.
-	}
 
 	/**
 	 * @return : Unique groupName, either ViewGroup_1, ViewGroup_2, ...

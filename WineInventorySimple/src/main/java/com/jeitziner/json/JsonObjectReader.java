@@ -77,7 +77,7 @@ public class JsonObjectReader {
 	 * @param {InputStream} is - 
 	 * @return {JsonObject}
 	 */
-	private static JsonObject getJsonObjectFromInputStream(InputStream is) {
+	public static JsonObject getJsonObjectFromInputStream(InputStream is) {
 		JsonObject jsonObject = null;
 		JsonReader jsonReader = Json.createReader(is);
 		try {
