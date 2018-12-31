@@ -13,15 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Classification;
-import ch.bibbias.bean.Country;
-import ch.bibbias.bean.Producer;
-import ch.bibbias.bean.Region;
-import ch.bibbias.bean.Wine;
-import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
-import ch.bibbias.event.SaveWineEvent;
-import ch.bibbias.event.WineDetailsEvent;
-import ch.bibbias.service.WineService;
+import ch.bibbias.event.ClassificationDetailsEvent;
+import ch.bibbias.event.SaveClassificationEvent;
+import ch.bibbias.service.ClassificationService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,51 +37,38 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
 @Controller
-public class WineTableController implements Initializable {
-	@FXML
-	private TableView<Wine> wineTable;
+public class ClassificationTableController implements Initializable {
 
 	@FXML
-	private TableColumn<Wine, Long> colWineId;
+	private TableView<Classification> classificationTable;
 
 	@FXML
-	private TableColumn<Wine, String> colName;
+	private TableColumn<Classification, Long> colClassificationId;
 
 	@FXML
-	private TableColumn<Wine, WineType> colType;
+	private TableColumn<Classification, String> colName;
 
 	@FXML
-	private TableColumn<Wine, Classification> colClassification;
-
-	@FXML
-	private TableColumn<Wine, Country> colCountry;
-
-	@FXML
-	private TableColumn<Wine, Region> colRegion;
-
-	@FXML
-	private TableColumn<Wine, Producer> colProducer;
-	@FXML
-	private TableColumn<Wine, Boolean> colEdit;
+	private TableColumn<Classification, Boolean> colEdit;
 
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
 	@Autowired
-	private WineService wineService;
+	private ClassificationService classificationService;
 
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 
-	private final ObservableList<Wine> wineList = FXCollections.observableArrayList();
+	private final ObservableList<Classification> classificationList = FXCollections.observableArrayList();
 
 	@Component
-	class SaveWineEventHandler implements ApplicationListener<SaveWineEvent> {
+	class SaveClassificationEventHandler implements ApplicationListener<SaveClassificationEvent> {
 
 		@Override
-		public void onApplicationEvent(SaveWineEvent event) {
-			loadWines();
+		public void onApplicationEvent(SaveClassificationEvent event) {
+			loadClassifications();
 		}
 
 	}
@@ -94,38 +76,33 @@ public class WineTableController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		wineTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		classificationTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		setColumnProperties();
-		loadWines();
+		loadClassifications();
 
 	}
 
 	private void setColumnProperties() {
-		colWineId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colClassificationId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-		colClassification.setCellValueFactory(new PropertyValueFactory<>("classification"));
-		colCountry.setCellValueFactory(new PropertyValueFactory<>("country"));
-		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
-		colProducer.setCellValueFactory(new PropertyValueFactory<>("producer"));
 		colEdit.setCellFactory(cellFactory);
 	}
 
-	private void loadWines() {
-		wineList.clear();
-		wineList.addAll(wineService.findAll());
-		wineTable.setItems(wineList);
+	private void loadClassifications() {
+		classificationList.clear();
+		classificationList.addAll(classificationService.findAll());
+		classificationTable.setItems(classificationList);
 	}
 
-	private void raiseEventShowWine(final Wine wine) {
-		WineDetailsEvent wineEvent = new WineDetailsEvent(this, wine);
-		applicationEventPublisher.publishEvent(wineEvent);
+	private void raiseEventShowClassification(final Classification classification) {
+		ClassificationDetailsEvent classificationEvent = new ClassificationDetailsEvent(this, classification);
+		applicationEventPublisher.publishEvent(classificationEvent);
 	}
 
-	Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>> cellFactory = new Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>>() {
+	Callback<TableColumn<Classification, Boolean>, TableCell<Classification, Boolean>> cellFactory = new Callback<TableColumn<Classification, Boolean>, TableCell<Classification, Boolean>>() {
 		@Override
-		public TableCell<Wine, Boolean> call(final TableColumn<Wine, Boolean> param) {
-			final TableCell<Wine, Boolean> cell = new TableCell<Wine, Boolean>() {
+		public TableCell<Classification, Boolean> call(final TableColumn<Classification, Boolean> param) {
+			final TableCell<Classification, Boolean> cell = new TableCell<Classification, Boolean>() {
 				Image imgEdit = new Image(getClass().getResourceAsStream("/images/edit.png"));
 				final Button btnEdit = new Button();
 
@@ -137,8 +114,8 @@ public class WineTableController implements Initializable {
 						setText(null);
 					} else {
 						btnEdit.setOnAction(e -> {
-							Wine wine = getTableView().getItems().get(getIndex());
-							raiseEventShowWine(wine);
+							Classification classification = getTableView().getItems().get(getIndex());
+							raiseEventShowClassification(classification);
 						});
 
 						btnEdit.setStyle("-fx-background-color: transparent;");
@@ -159,18 +136,17 @@ public class WineTableController implements Initializable {
 			return cell;
 		}
 	};
-	
+
 	@FXML
-	void editWine(ActionEvent event) {
-		Wine wine = wineTable.getSelectionModel().getSelectedItem();
-		raiseEventShowWine(wine);
-		
-		
+	void editClassification(ActionEvent event) {
+		Classification classification = classificationTable.getSelectionModel().getSelectedItem();
+		raiseEventShowClassification(classification);
+
 	}
 
 	@FXML
-	void deleteWines(ActionEvent event) {
-		List<Wine> wines = wineTable.getSelectionModel().getSelectedItems();
+	void deleteClassifications(ActionEvent event) {
+		List<Classification> countries = classificationTable.getSelectionModel().getSelectedItems();
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
@@ -179,9 +155,9 @@ public class WineTableController implements Initializable {
 		Optional<ButtonType> action = alert.showAndWait();
 
 		if (action.get() == ButtonType.OK)
-			wineService.deleteInBatch(wines);
+			classificationService.deleteInBatch(countries);
 
-		loadWines();
+		loadClassifications();
 	}
 
 }

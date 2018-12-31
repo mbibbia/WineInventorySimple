@@ -4,28 +4,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.bibbias.bean.WineType;
-import ch.bibbias.repository.WineTypeRepository;
-import ch.bibbias.service.WineTypeService;
+import ch.bibbias.bean.Country;
+import ch.bibbias.repository.CountryRepository;
+import ch.bibbias.service.CountryService;
 
 @Component
-public class WineTypeServiceImpl implements WineTypeService {
+public class CountryServiceImpl implements CountryService {
 
 	@Autowired
-	private WineTypeRepository repository;
+	private CountryRepository repository;
 
 	@Override
-	public WineType save(WineType entity) {
+	public Country save(Country entity) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public WineType update(WineType entity) {
+	public Country update(Country entity) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public void delete(WineType entity) {
+	public void delete(Country entity) {
 		repository.delete(entity);
 	}
 
@@ -35,22 +35,27 @@ public class WineTypeServiceImpl implements WineTypeService {
 	}
 
 	@Override
-	public void deleteInBatch(List<WineType> entities) {
+	public void deleteInBatch(List<Country> entities) {
 		repository.deleteInBatch(entities);
 	}
 
 	@Override
-	public WineType find(Long id) {
+	public Country find(Long id) {
 		return repository.getOne(id);
 	}
 
 	@Override
-	public List<WineType> findAll() {
+	public List<Country> findAll() {
 		return repository.findAll();
 	}
 
 	@Override
-	public WineType findByName(String name) {
+	public Country findByCode(String code) {
+		return repository.findByCode(code);
+	}
+
+	@Override
+	public Country findByName(String name) {
 		return repository.findByName(name);
 	}
 

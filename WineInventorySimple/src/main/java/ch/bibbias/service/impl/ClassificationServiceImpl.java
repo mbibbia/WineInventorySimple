@@ -4,28 +4,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.bibbias.bean.WineType;
-import ch.bibbias.repository.WineTypeRepository;
-import ch.bibbias.service.WineTypeService;
+import ch.bibbias.bean.Classification;
+import ch.bibbias.repository.ClassificationRepository;
+import ch.bibbias.service.ClassificationService;
 
 @Component
-public class WineTypeServiceImpl implements WineTypeService {
+public class ClassificationServiceImpl implements ClassificationService {
 
 	@Autowired
-	private WineTypeRepository repository;
+	private ClassificationRepository repository;
 
 	@Override
-	public WineType save(WineType entity) {
+	public Classification save(Classification entity) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public WineType update(WineType entity) {
+	public Classification update(Classification entity) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public void delete(WineType entity) {
+	public void delete(Classification entity) {
 		repository.delete(entity);
 	}
 
@@ -35,22 +35,22 @@ public class WineTypeServiceImpl implements WineTypeService {
 	}
 
 	@Override
-	public void deleteInBatch(List<WineType> entities) {
+	public void deleteInBatch(List<Classification> entities) {
 		repository.deleteInBatch(entities);
 	}
 
 	@Override
-	public WineType find(Long id) {
+	public Classification find(Long id) {
 		return repository.getOne(id);
 	}
 
 	@Override
-	public List<WineType> findAll() {
+	public List<Classification> findAll() {
 		return repository.findAll();
 	}
 
 	@Override
-	public WineType findByName(String name) {
+	public Classification findByName(String name) {
 		return repository.findByName(name);
 	}
 

@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
@@ -10,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.WineDetailController">
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.ClassificationDetailController">
    <children>
       <VBox prefHeight="571.0" prefWidth="306.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css">
          <children>
-            <Label text="Wine Detail" textFill="WHITE">
+            <Label text="Classification Detail" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -24,12 +23,12 @@
             </Label>
             <HBox prefHeight="30.0" prefWidth="265.0">
                <children>
-                  <Label text="Wine ID - " textFill="#f8f7f7">
+                  <Label text="Classification ID - " textFill="#f8f7f7">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="wineId">
+                  <Label fx:id="classificationId">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -44,31 +43,6 @@
                   <Insets left="25.0" right="25.0" />
                </VBox.margin>
             </TextField>
-            <ComboBox fx:id="type" prefWidth="246.0" promptText="Type">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox fx:id="classification" layoutX="40.0" layoutY="170.0" prefWidth="246.0" promptText="Classification">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox fx:id="country" layoutX="40.0" layoutY="206.0" prefWidth="246.0" promptText="Country">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox fx:id="region" layoutX="40.0" layoutY="242.0" onMouseClicked="#handleRegionClicked" prefWidth="246.0" promptText="Region">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox fx:id="producer" layoutX="40.0" layoutY="278.0" prefWidth="246.0" promptText="Producer">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </ComboBox>
             <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
                <children>
                   <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
@@ -76,7 +50,7 @@
                         <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
                      </effect>
                   </Button>
-                  <Button fx:id="saveWine" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveWine" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                  <Button fx:id="saveClassification" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveClassification" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>

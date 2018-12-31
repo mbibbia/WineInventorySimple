@@ -2,9 +2,11 @@ package ch.bibbias.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,15 +20,20 @@ public class Wine {
 
 	private String name;
 
-	private String type;
+	@OneToOne(fetch = FetchType.LAZY)
+	private WineType type;
 
-	private String classification;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Classification classification;
 
-	private String country;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Country country;
 
-	private String region;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Region region;
 
-	private String producer;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Producer producer;
 
 	public long getId() {
 		return id;
@@ -44,43 +51,43 @@ public class Wine {
 		this.name = name;
 	}
 
-	public String getType() {
+	public WineType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(WineType type) {
 		this.type = type;
 	}
 
-	public String getClassification() {
+	public Classification getClassification() {
 		return classification;
 	}
 
-	public void setClassification(String classification) {
+	public void setClassification(Classification classification) {
 		this.classification = classification;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
-	public String getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 
-	public String getProducer() {
+	public Producer getProducer() {
 		return producer;
 	}
 
-	public void setProducer(String producer) {
+	public void setProducer(Producer producer) {
 		this.producer = producer;
 	}
 

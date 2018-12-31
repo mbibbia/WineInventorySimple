@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox prefHeight="383.0" prefWidth="746.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bibbias.controller.RegionTableController">
+   <children>
+      <TableView fx:id="regionTable" prefHeight="383.0" prefWidth="748.0" tableMenuButtonVisible="true">
+         <columns>
+            <TableColumn fx:id="colRegionId" maxWidth="700.0" prefWidth="20.0" text="ID" />
+            <TableColumn fx:id="colCountry" maxWidth="4000.0" prefWidth="260.0" resizable="false" text="Country" />
+            <TableColumn fx:id="colName" maxWidth="4000.0" prefWidth="350.0" resizable="false" text="Name" />
+            <TableColumn fx:id="colEdit" maxWidth="3500.0" prefWidth="81.0" resizable="false" text="Edit" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                  <MenuItem fx:id="editRegion" mnemonicParsing="false" onAction="#editRegion" text="Edit" />
+                <MenuItem fx:id="deleteRegions" mnemonicParsing="false" onAction="#deleteRegions" text="Delete" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </TableView>
+   </children>
+</HBox>

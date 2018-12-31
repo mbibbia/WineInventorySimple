@@ -2,7 +2,6 @@ package ch.bibbias.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
@@ -10,11 +9,18 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import ch.bibbias.bean.Classification;
+import ch.bibbias.bean.Country;
+import ch.bibbias.bean.Producer;
+import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
+import ch.bibbias.service.ClassificationService;
+import ch.bibbias.service.CountryService;
+import ch.bibbias.service.ProducerService;
 import ch.bibbias.service.WineService;
 import ch.bibbias.service.WineTypeService;
 import javafx.collections.FXCollections;
@@ -42,19 +48,19 @@ public class WineDetailController implements Initializable {
 	private TextField name;
 
 	@FXML
-	private ComboBox<String> type;
+	private ComboBox<WineType> type;
 
 	@FXML
-	private ComboBox<String> classification;
+	private ComboBox<Classification> classification;
 
 	@FXML
-	private ComboBox<String> country;
+	private ComboBox<Country> country;
 
 	@FXML
-	private ComboBox<String> region;
+	private ComboBox<Region> region;
 
 	@FXML
-	private ComboBox<String> producer;
+	private ComboBox<Producer> producer;
 
 	@FXML
 	private Button reset;
@@ -66,10 +72,6 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
-	@Lazy
-	@Autowired
-	private WineTableController wineTableController;
-
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 
@@ -79,12 +81,20 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private WineTypeService wineTypeService;
 
+	@Autowired
+	private ClassificationService classificationService;
+
+	@Autowired
+	private CountryService countryService;
+
+	@Autowired
+	private ProducerService producerService;
+
 	@Component
 	class ShowWineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
 
 		@Override
 		public void onApplicationEvent(WineDetailsEvent event) {
-
 			wineId.setText(Long.toString(event.getWine().getId()));
 			name.setText(event.getWine().getName());
 			type.setValue(event.getWine().getType());
@@ -92,88 +102,55 @@ public class WineDetailController implements Initializable {
 			country.setValue(event.getWine().getCountry());
 			region.setValue(event.getWine().getRegion());
 			producer.setValue(event.getWine().getProducer());
-
 		}
 
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		type.setItems(loadTypes());
 		classification.setItems(loadClassifications());
 		country.setItems(loadCountries());
-		region.setItems(loadRegions());
 		producer.setItems(loadProducers());
-
 	}
 
-	private ObservableList<String> loadTypes() {
-
-		ObservableList<String> types = FXCollections.observableArrayList();
-
-		for (WineType wt : wineTypeService.findAll()) {
-			types.add(wt.toString());
-		}
-
-		return types;
-
+	private ObservableList<WineType> loadTypes() {
+		return FXCollections.observableArrayList(wineTypeService.findAll());
 	}
 
-	private ObservableList<String> loadClassifications() {
-
-		ObservableList<String> classifications = FXCollections.observableArrayList("", "DOC", "DOCG");
-
-		return classifications;
-
+	private ObservableList<Classification> loadClassifications() {
+		return FXCollections.observableArrayList(classificationService.findAll());
 	}
 
-	private ObservableList<String> loadCountries() {
-
-		ObservableList<String> countries = FXCollections.observableArrayList("", "CH", "FR", "IT");
-
-		return countries;
-
+	private ObservableList<Country> loadCountries() {
+		return FXCollections.observableArrayList(countryService.findAll());
 	}
 
-	private ObservableList<String> loadRegions() {
-
-		ObservableList<String> regions = FXCollections.observableArrayList("", "Zürich", "Bordeaux", "Piemont");
-
-		return regions;
-
-	}
-
-	private ObservableList<String> loadProducers() {
-
-		ObservableList<String> producers = FXCollections.observableArrayList("", "Parusso", "Gérard Bertrand",
-				"Sciavenza");
-
-		return producers;
-
+	private ObservableList<Producer> loadProducers() {
+		return FXCollections.observableArrayList(producerService.findAll());
 	}
 
 	private String getName() {
 		return name.getText();
 	}
 
-	private String getType() {
+	private WineType getType() {
 		return type.getValue();
 	}
 
-	private String getClassification() {
+	private Classification getClassification() {
 		return classification.getValue();
 	}
 
-	private String getCountry() {
+	private Country getCountry() {
 		return country.getValue();
 	}
 
-	private String getRegion() {
+	private Region getRegion() {
 		return region.getValue();
 	}
 
-	private String getProducer() {
+	private Producer getProducer() {
 		return producer.getValue();
 	}
 
@@ -192,6 +169,15 @@ public class WineDetailController implements Initializable {
 		region.getSelectionModel().clearSelection();
 		producer.getSelectionModel().clearSelection();
 
+	}
+
+	@FXML
+	private void handleRegionClicked() {
+
+		if (country.getValue() != null) {
+			ObservableList<Region> regions = FXCollections.observableArrayList(country.getValue().getRegions());
+			region.setItems(regions);
+		}
 	}
 
 	@FXML
@@ -229,6 +215,8 @@ public class WineDetailController implements Initializable {
 			wine.setProducer(getProducer());
 			Wine updatedWine = wineService.update(wine);
 			updateAlert(updatedWine);
+
+			raiseEventSaveWine(updatedWine);
 		}
 
 		clearFields();

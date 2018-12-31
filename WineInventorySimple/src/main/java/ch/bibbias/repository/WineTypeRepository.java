@@ -8,4 +8,6 @@ import ch.bibbias.bean.WineType;
 @Repository
 public interface WineTypeRepository extends JpaRepository<WineType, Long> {
 
+	WineType findByName(String name);
+
 }

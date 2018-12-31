@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Wine;
+import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.service.WineService;
 import javafx.application.Platform;
@@ -51,7 +52,7 @@ public class WineController implements Initializable {
 	private TextField name;
 
 	@FXML
-	private ComboBox<String> type;
+	private ComboBox<WineType> type;
 
 	@FXML
 	private ComboBox<String> classification;
@@ -109,7 +110,7 @@ public class WineController implements Initializable {
 
 	private ObservableList<Wine> wineList = FXCollections.observableArrayList();
 
-	private ObservableList<String> types = FXCollections.observableArrayList("", "Rotwein", "Weisswein");
+	//private ObservableList<String> types = FXCollections.observableArrayList("", "Rotwein", "Weisswein");
 	private ObservableList<String> classifications = FXCollections.observableArrayList("DOC", "DOCG");
 	private ObservableList<String> countries = FXCollections.observableArrayList("CH", "FR", "IT");
 	private ObservableList<String> regions = FXCollections.observableArrayList("Zürich", "Bordeaux", "Piemont");
@@ -135,10 +136,10 @@ public class WineController implements Initializable {
 			Wine wine = new Wine();
 			wine.setName(getName());
 			wine.setType(getType());
-			wine.setClassification(getClassification());
-			wine.setCountry(getCountry());
-			wine.setRegion(getRegion());
-			wine.setProducer(getProducer());
+			//wine.setClassification(getClassification());
+			//wine.setCountry(getCountry());
+			//wine.setRegion(getRegion());
+			//wine.setProducer(getProducer());
 
 			Wine newWine = wineService.save(wine);
 
@@ -148,10 +149,10 @@ public class WineController implements Initializable {
 			Wine wine = wineService.find(Long.parseLong(wineId.getText()));
 			wine.setName(getName());
 			wine.setType(getType());
-			wine.setClassification(getClassification());
-			wine.setCountry(getCountry());
-			wine.setRegion(getRegion());
-			wine.setProducer(getProducer());
+			//wine.setClassification(getClassification());
+			//wine.setCountry(getCountry());
+			//wine.setRegion(getRegion());
+			//wine.setProducer(getProducer());
 			Wine updatedWine = wineService.update(wine);
 			updateAlert(updatedWine);
 		}
@@ -187,7 +188,7 @@ public class WineController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		type.setItems(types);
+		//type.setItems(types);
 		classification.setItems(classifications);
 		country.setItems(countries);
 		region.setItems(regions);
@@ -249,11 +250,11 @@ public class WineController implements Initializable {
 				private void updateWine(Wine wine) {
 					wineId.setText(Long.toString(wine.getId()));
 					name.setText(wine.getName());
-					type.setValue(wine.getType());
-					classification.setValue(wine.getClassification());
-					country.setValue(wine.getCountry());
-					region.setValue(wine.getRegion());
-					producer.setValue(wine.getProducer());
+					//type.setValue(wine.getType());
+					//classification.setValue(wine.getClassification());
+					//country.setValue(wine.getCountry());
+					//region.setValue(wine.getRegion());
+					//producer.setValue(wine.getProducer());
 
 				}
 			};
@@ -294,7 +295,7 @@ public class WineController implements Initializable {
 		return name.getText();
 	}
 
-	private String getType() {
+	private WineType getType() {
 		return type.getValue();
 	}
 
