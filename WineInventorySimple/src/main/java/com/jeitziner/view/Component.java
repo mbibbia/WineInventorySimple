@@ -22,10 +22,14 @@ public abstract class Component {
 	//--------------------------------------------------------------------------
 	// METHODS
 	//--------------------------------------------------------------------------
-	public abstract void addComponentLeft(Component component, boolean splitCurrentComponent);
+	public abstract void addComponentLeft(String name, Component component, boolean splitCurrentComponent);
 	
-	public abstract void addComponentRight(Component component, boolean splitCurrentComponent);
+	public abstract void addComponentRight(String name, Component component, boolean splitCurrentComponent);
 	
+	public abstract void addComponentTop(String name, Component component, boolean splitCurrentComponent);
+
+	public abstract void addComponentBottom(String name, Component component, boolean splitCurrentComponent);
+
 	public abstract Pane createPane(FxmlLoader loader);
 	
 	//--------------------------------------------------------------------------

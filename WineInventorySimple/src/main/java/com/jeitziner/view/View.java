@@ -29,14 +29,24 @@ public class View extends Component {
 	//--------------------------------------------------------------------------
 	// METHODS
 	//--------------------------------------------------------------------------
-	public void addComponentLeft(Component component, boolean splitCurrentComponent) {
+	public void addComponentLeft(String name, Component component, boolean splitCurrentComponent) {
 		// Delegate to parent view group
-		getParentViewGroup().addComponentLeft(component, splitCurrentComponent);
+		getParentViewGroup().addComponentLeft(name, component, splitCurrentComponent);
 	}
 
-	public void addComponentRight(Component component, boolean splitCurrentComponent) {
+	public void addComponentRight(String name, Component component, boolean splitCurrentComponent) {
 		// Delegate to parent view group
-		getParentViewGroup().addComponentRight(component, splitCurrentComponent);
+		getParentViewGroup().addComponentRight(name, component, splitCurrentComponent);
+	}
+	
+	public void addComponentTop(String name, Component component, boolean splitCurrentComponent) {
+		// Delegate to parent view group
+		getParentViewGroup().addComponentTop(name, component, splitCurrentComponent);
+	}
+	
+	public void addComponentBottom(String name, Component component, boolean splitCurrentComponent) {
+		// Delegate to parent view group
+		getParentViewGroup().addComponentBottom(name, component, splitCurrentComponent);
 	}
 	
 	public Pane createPane(FxmlLoader loader) {

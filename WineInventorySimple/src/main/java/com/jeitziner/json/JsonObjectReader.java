@@ -19,8 +19,6 @@ import javax.json.stream.JsonParsingException;
 
 import org.slf4j.Logger;
 
-import com.jeitziner.view.Desktop;
-
 /**
  * This class implements a static method "getJsonObjectFromFile" to 
  * create a JSON object for a given input file.

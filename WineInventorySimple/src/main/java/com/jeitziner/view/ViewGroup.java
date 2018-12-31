@@ -59,12 +59,13 @@ public class ViewGroup extends Component {
 	//--------------------------------------------------------------------------
 	// METHODS
 	//--------------------------------------------------------------------------	
-	public void addComponentLeft(Component component, boolean splitCurrentComponent) {
+	public void addComponentLeft(String name, Component component, boolean splitCurrentComponent) {
 		// If the orientation is horizontal , we can just insert a component at
 		// the first position of this.components ArrayList.
 		if (getOrientation() == Orientation.HORIZONTAL) {
 			// It's not necessary to add a new group if the orientation is 
 			// horizontal.
+			// front = true means add at front of component list
 			addComponent(component, true);
 		} else {
 			// If the orientation is vertical, we need to wrap this view group
@@ -84,7 +85,7 @@ public class ViewGroup extends Component {
 				for (int i = 0; i < tempComponents.size(); ++i) {
 					if (i == 0) {
 						// Create a new ViewGroup
-						ViewGroup viewGroup = new ViewGroup(Desktop.createGroupName(),
+						ViewGroup viewGroup = new ViewGroup(name,
 								                            Orientation.HORIZONTAL);
 						viewGroup.addComponent(component);
 						viewGroup.addComponent(tempComponents.get(i));
@@ -101,7 +102,7 @@ public class ViewGroup extends Component {
 				addComponent(component);
 				
 				// Create a new ViewGroup
-				ViewGroup viewGroup = new ViewGroup(Desktop.createGroupName(),
+				ViewGroup viewGroup = new ViewGroup(name,
 						                            Orientation.VERTICAL);
 				for (int i = 0; i < tempComponents.size(); ++i) {
 					viewGroup.addComponent(tempComponents.get(i));						
@@ -111,12 +112,13 @@ public class ViewGroup extends Component {
 		}
 	}
 
-	public void addComponentRight(Component component, boolean splitCurrentComponent) {
+	public void addComponentRight(String name, Component component, boolean splitCurrentComponent) {
 		// If the orientation is horizontal , we can just insert a component at
 		// the first position of this.components ArrayList.
 		if (getOrientation() == Orientation.HORIZONTAL) {
 			// It's not necessary to add a new group if the orientation is 
 			// horizontal.
+			// front = false means add at end of component list
 			addComponent(component, false);
 		} else {
 			// If the orientation is vertical, we need to wrap this view group
@@ -136,8 +138,61 @@ public class ViewGroup extends Component {
 				for (int i = 0; i < tempComponents.size(); ++i) {
 					if (i == tempComponents.size() - 1) {
 						// Create a new ViewGroup
-						ViewGroup viewGroup = new ViewGroup(Desktop.createGroupName(),
+						ViewGroup viewGroup = new ViewGroup(name,
 								                            Orientation.HORIZONTAL);
+						viewGroup.addComponent(tempComponents.get(i));
+						viewGroup.addComponent(component);
+						addComponent(viewGroup);
+					} else {
+						addComponent(tempComponents.get(i));
+					}
+				}
+			} else {
+				// Need to change orientation, since new component is added to the right
+				// of existing components.
+				setOrientation(Orientation.HORIZONTAL);
+								
+				// Create a new ViewGroup
+				ViewGroup viewGroup = new ViewGroup(name,
+						                            Orientation.VERTICAL);
+				for (int i = 0; i < tempComponents.size(); ++i) {
+					viewGroup.addComponent(tempComponents.get(i));						
+				}
+				addComponent(viewGroup);	
+				
+				addComponent(component);				
+			}
+		}
+	}
+
+	public void addComponentTop(String name, Component component, boolean splitCurrentComponent) {
+		// If the orientation is vertical, we can just insert a component at
+		// the first position of this.components ArrayList.
+		if (getOrientation() == Orientation.VERTICAL) {
+			// It's not necessary to add a new group if the orientation is 
+			// horizontal.
+			// front = true means add at front of component list
+			addComponent(component, true);
+		} else {
+			// If the orientation is horizontal, we need to wrap this view group
+			// in a new view group whose orientation is vertical. Then we add
+			// component and this view group to the new view group.
+
+			// Create a temporary list of all components
+			ArrayList<Component> tempComponents = new ArrayList<Component>(this.components.size());
+			for (Component cmp: this.components) {
+				tempComponents.add(cmp);
+			}
+			
+			// Clear this.components and recreate it.
+			this.components.clear();
+							
+			if (splitCurrentComponent) {
+				for (int i = 0; i < tempComponents.size(); ++i) {
+					if (i == 0) {
+						// Create a new ViewGroup
+						ViewGroup viewGroup = new ViewGroup(name,
+								                            Orientation.VERTICAL);
 						viewGroup.addComponent(component);
 						viewGroup.addComponent(tempComponents.get(i));
 						addComponent(viewGroup);
@@ -146,18 +201,71 @@ public class ViewGroup extends Component {
 					}
 				}
 			} else {
-				// Need to change orientation, since new component is added to the left
+				// Need to change orientation, since new component is added at the top
 				// of existing components.
-				setOrientation(Orientation.HORIZONTAL);
-								
+				setOrientation(Orientation.VERTICAL);
+				
+				addComponent(component);
+				
 				// Create a new ViewGroup
-				ViewGroup viewGroup = new ViewGroup(Desktop.createGroupName(),
-						                            Orientation.VERTICAL);
+				ViewGroup viewGroup = new ViewGroup(name,
+						                            Orientation.HORIZONTAL);
 				for (int i = 0; i < tempComponents.size(); ++i) {
 					viewGroup.addComponent(tempComponents.get(i));						
+				}									
+				addComponent(viewGroup);				
+			}
+		}
+	}
+
+	public void addComponentBottom(String name, Component component, boolean splitCurrentComponent) {
+		// If the orientation is vertical, we can just insert a component at
+		// the last position of this.components ArrayList.
+		if (getOrientation() == Orientation.VERTICAL) {
+			// It's not necessary to add a new group if the orientation is 
+			// horizontal.
+			// front = false means add at end of component list
+			addComponent(component, false);
+		} else {
+			// If the orientation is horizontal, we need to wrap this view group
+			// in a new view group whose orientation is vertical. Then we add
+			// component and this view group to the new view group.
+
+			// Create a temporary list of all components
+			ArrayList<Component> tempComponents = new ArrayList<Component>(this.components.size());
+			for (Component cmp: this.components) {
+				tempComponents.add(cmp);
+			}
+			
+			// Clear this.components and recreate it.
+			this.components.clear();
+							
+			if (splitCurrentComponent) {
+				for (int i = 0; i < tempComponents.size(); ++i) {
+					if (i == tempComponents.size() - 1) {
+						// Create a new ViewGroup
+						ViewGroup viewGroup = new ViewGroup(name,
+								                            Orientation.VERTICAL);
+						viewGroup.addComponent(tempComponents.get(i));
+						viewGroup.addComponent(component);
+						addComponent(viewGroup);
+					} else {
+						addComponent(tempComponents.get(i));
+					}
 				}
-				addComponent(viewGroup);	
+			} else {
+				// Need to change orientation, since new component is added at the top
+				// of existing components.
+				setOrientation(Orientation.VERTICAL);
 				
+				// Create a new ViewGroup
+				ViewGroup viewGroup = new ViewGroup(name,
+						                            Orientation.HORIZONTAL);
+				for (int i = 0; i < tempComponents.size(); ++i) {
+					viewGroup.addComponent(tempComponents.get(i));						
+				}									
+				addComponent(viewGroup);				
+
 				addComponent(component);				
 			}
 		}

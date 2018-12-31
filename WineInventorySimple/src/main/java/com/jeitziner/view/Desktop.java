@@ -34,8 +34,8 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------	
 	private static final Logger LOG = getLogger(Desktop.class);
 	
-	private static boolean useTestGroupId = false;
-	private static int groupId = 0;
+	private boolean useTestGroupId = false;
+	private int groupId = 0;
 
 	//--------------------------------------------------------------------------
 	// CONSTRUCTORS
@@ -48,26 +48,6 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------
 	// STATIC METHODS
 	//--------------------------------------------------------------------------	
-	/*
-	public static Desktop createDesktopFromJsonFile(String desktopName, String filePath) {
-		JsonObject rootObj = JsonObjectReader.getJsonObjectFromFile(filePath);
-		if (rootObj == null) {
-			LOG.error("JsonFile: rootObj is null");
-			return null;
-		}		
-		return Desktop.create(desktopName, rootObj);
-	}
-
-	public static Desktop createDesktopFromJsonString(String desktopName, String jsonString) {
-		JsonObject rootObj = JsonObjectReader.getJsonObjectFromString(jsonString);
-		if (rootObj == null) {
-			LOG.error("JsonString: rootObj is null");
-		return null;
-		}		
-		return Desktop.create(desktopName, rootObj);
-	}
-	*/
-
 	public static String createSpacer(char ch, int num) {		
 		return new String(new char[num]).replace('\0', ch);
 	}
@@ -328,10 +308,10 @@ public class Desktop extends ViewGroup {
 	 * @return : Unique groupName, either ViewGroup_1, ViewGroup_2, ...
 	 *           or UUID.
 	 */
-	static String createGroupName() {
+	public String createGroupName() {
 		String returnValue;
 		
-		if (Desktop.getUseTestGroupId()) {
+		if (this.getUseTestGroupId()) {
 			groupId += 1;
 			returnValue = String.format("ViewGroup_%d", groupId);
 		} else {
@@ -358,12 +338,12 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------
 	// GETTER AND SETTER METHODS
 	//--------------------------------------------------------------------------	
-	static boolean getUseTestGroupId() {
-		return useTestGroupId;
+	public boolean getUseTestGroupId() {
+		return this.useTestGroupId;
 	}
 
-	static void setUseTestGroupId(boolean useTestGroupId) {
-		Desktop.useTestGroupId = useTestGroupId;
+	public void setUseTestGroupId(boolean useTestGroupId) {
+		this.useTestGroupId = useTestGroupId;
 	}
 
 }
