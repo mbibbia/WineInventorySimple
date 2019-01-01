@@ -20,18 +20,20 @@ public class DesktopController {
 	private DesktopModel model;
 	private DesktopView view;
 	
+	private StageManager stageManager;
 	private FxmlLoader fxmlLoader;
 
 	public DesktopController(DesktopModel model,
 			                 DesktopView view,
-			                 FxmlLoader fxmlLoader) {
+			                 StageManager stageManager,
+							 FxmlLoader fxmlLoader) {
 		this.model = model;
 		this.view = view;
+		this.stageManager = stageManager;
 		this.fxmlLoader = fxmlLoader;
-	}
-	
-	public MenuBar getMenuBar() {		
-		return this.view.menuBar(this.model.getDesktopMap());
+
+		// Connect view to controller
+		this.view.setController(this);
 	}
 
 	public Pane createDesktop(String desktopName) {		
@@ -57,9 +59,40 @@ public class DesktopController {
 						               desktopName,
 						               usedDesktop.getName()));			
 				break;
-			}				
+			}
 		}
-		
 		return usedDesktop;		
 	}
+
+	public void displayInitialScene() {
+		String initialDesktopName = AppProperties.getInstance().initialDesktop;
+		changeScene(initialDesktopName);
+	}
+
+	private String getSceneTitle(String desktopName) {
+		String appName = AppProperties.getInstance().appName;
+		Integer appVersion = AppProperties.getInstance().appVersion;
+
+		String sceneTitle = null;
+		if (appName == null || appName.isEmpty()) {
+			sceneTitle = desktopName;
+		} else {
+			sceneTitle = String.format("%s (Version %d) - %s", appName, appVersion, desktopName);
+		}
+
+		return sceneTitle;
+	}
+
+	public void changeScene(String desktopName) {
+		Pane pane = createDesktop(desktopName);
+		String sceneTitle = getSceneTitle(desktopName);
+		this.stageManager.switchScene(pane, sceneTitle);
+	}
+	
+	public MenuBar getMenuBar() {		
+		return this.view.menuBar(this.model.getDesktopMap());
+	}
+
+
+
 }

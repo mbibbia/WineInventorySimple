@@ -3,15 +3,12 @@ package ch.bibbias.config;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.InputStream;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 
 import com.jeitziner.gui.DesktopController;
 import com.jeitziner.gui.DesktopModel;
 import com.jeitziner.gui.DesktopView;
-import com.jeitziner.view.Desktop;
 
 import ch.bibbias.view.FxmlLoaderImpl;
 import javafx.application.Platform;
@@ -46,35 +43,18 @@ public class StageManager {
 		LOG.info("Intialize StageManager");
 		this.desktopController = new DesktopController(new DesktopModel(is),
 				                                       new DesktopView(),
+				                                       this,
 				                                       new FxmlLoaderImpl(springFXMLLoader));
 	}
 	
 	public void displayInitialScene() {
-		String initialDesktopName = AppProperties.getInstance().initialDesktop;
-
-		Pane pane = this.desktopController.createDesktop(initialDesktopName);
-		String sceneTitle = getSceneTitle(initialDesktopName);
-
-		this.switchScene(pane, sceneTitle);
+		this.desktopController.displayInitialScene();
 	}
 
 	public void switchScene(Pane pane, String sceneTitle) {
 		show(pane, sceneTitle);
 	}
 
-	private String getSceneTitle(String desktopName) {
-		String appName = AppProperties.getInstance().appName;
-		Integer appVersion = AppProperties.getInstance().appVersion;
-
-		String sceneTitle = null;
-		if (appName == null || appName.isEmpty()) {
-			sceneTitle = desktopName;
-		} else {
-			sceneTitle = String.format("%s (Version %d) - %s", appName, appVersion, desktopName);
-		}
-
-		return sceneTitle;
-	}
 
 	private void show(final Parent rootnode, String title) {
 		Scene scene = prepareScene(rootnode);
