@@ -56,6 +56,9 @@
   <!-- Logging for StageManager -->
   <logger name="ch.bibbias.config.StageManager" level="DEBUG" />
   
+  <!-- Logging for DesktopController -->
+  <logger name="com.jeitziner.gui.DesktopController" level="DEBUG" />
+
   <!-- Logging for Desktop -->
   <logger name="com.jeitziner.view.Desktop" level="DEBUG" />
   
@@ -70,6 +73,5 @@
   
   <!-- Logging for JsonObjectReaderTest -->
   <logger name="com.jeitziner.test.json.JsonObjectReader" level="DEBUG" />
-  
     
 </configuration>

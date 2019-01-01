@@ -4,9 +4,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 
+import com.jeitziner.gui.DesktopController;
+import com.jeitziner.gui.DesktopModel;
+import com.jeitziner.gui.DesktopView;
 import com.jeitziner.view.Desktop;
 
 import ch.bibbias.view.FxmlLoaderImpl;
@@ -23,10 +27,11 @@ public class StageManager {
 	private final SpringFXMLLoader springFXMLLoader;
 	
 	/**
-	 * Read "desktop.json" file and create all Desktop instances. 
-	 * Store Desktop instances in a map, key = desktop name
+	 * A desktop controller is responsible for creating the main view which
+	 * consists of a menu bar and a view. The view is initialized from
+	 * a JSON file (desktop.json).
 	 */
-	private Map<String, Desktop> desktopMap;
+	private DesktopController desktopController;
 
 	public StageManager(SpringFXMLLoader springFXMLLoader, Stage stage) {
 		this.springFXMLLoader = springFXMLLoader;
@@ -34,41 +39,41 @@ public class StageManager {
 	}
 
 	/**
-	 * @param is : The input stream is used to initialize the desktop map
+	 * @param is : The input stream is used to initialize the desktop model
 	 *             from a json file.
 	 */
 	public void init(InputStream is) {
-		this.desktopMap = Desktop.getDesktopsFromInputStream(is);
+		LOG.info("Intialize StageManager");
+		this.desktopController = new DesktopController(new DesktopModel(is),
+				                                       new DesktopView(),
+				                                       new FxmlLoaderImpl(springFXMLLoader));
 	}
 	
-	public void switchSceneByName(String desktopName) {
-		LOG.info(String.format("Switch to scene %s", desktopName));
-		Desktop desktop = this.desktopMap.getOrDefault(desktopName, null);		
-		if (desktop == null) {
-			LOG.error(String.format("Cannot load desktop '%s'",desktopName));
-			return;
-		}
-		LOG.info(String.format("Desktop %s successfully loaded", desktopName));
-		LOG.info(String.format(desktop.toString()));
+	public void displayInitialScene() {
+		String initialDesktopName = AppProperties.getInstance().initialDesktop;
 
-		if (desktop != null) {
-			FxmlLoaderImpl fxmlLoader = new FxmlLoaderImpl(springFXMLLoader);
-			Pane viewRootNodeHierarchy = desktop.createPane(fxmlLoader);
-			
-			String appName = AppProperties.getInstance().appName;
-			Integer appVersion = AppProperties.getInstance().appVersion;
-						
-			//show(viewRootNodeHierarchy, "Should get title from view");
-			String title = null;
-			if (appName == null || appName.isEmpty()) {
-				title = desktop.getName();
-			} else {
-				title = String.format("%s (Version %d) - %s", appName, appVersion, desktop.getName());
-			}
-			//show(viewRootNodeHierarchy, desktop.getName());
-			show(viewRootNodeHierarchy, title);
+		Pane pane = this.desktopController.createDesktop(initialDesktopName);
+		String sceneTitle = getSceneTitle(initialDesktopName);
+
+		this.switchScene(pane, sceneTitle);
+	}
+
+	public void switchScene(Pane pane, String sceneTitle) {
+		show(pane, sceneTitle);
+	}
+
+	private String getSceneTitle(String desktopName) {
+		String appName = AppProperties.getInstance().appName;
+		Integer appVersion = AppProperties.getInstance().appVersion;
+
+		String sceneTitle = null;
+		if (appName == null || appName.isEmpty()) {
+			sceneTitle = desktopName;
+		} else {
+			sceneTitle = String.format("%s (Version %d) - %s", appName, appVersion, desktopName);
 		}
 
+		return sceneTitle;
 	}
 
 	private void show(final Parent rootnode, String title) {
