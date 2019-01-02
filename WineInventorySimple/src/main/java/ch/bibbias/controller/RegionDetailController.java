@@ -14,7 +14,10 @@ import ch.bibbias.bean.Region;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.event.RegionDetailsEvent;
 import ch.bibbias.event.SaveRegionEvent;
+import ch.bibbias.service.CountryService;
 import ch.bibbias.service.RegionService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -60,6 +63,9 @@ public class RegionDetailController implements Initializable {
 
 	@Autowired
 	private RegionService regionService;
+	
+	@Autowired
+	private CountryService countryService;
 
 	@Component
 	class ShowRegionDetailEventHandler implements ApplicationListener<RegionDetailsEvent> {
@@ -75,7 +81,11 @@ public class RegionDetailController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		country.setItems(loadCountries());
+	}
 
+	private ObservableList<Country> loadCountries() {
+		return FXCollections.observableArrayList(countryService.findAll());
 	}
 
 	private Country getCountry() {
