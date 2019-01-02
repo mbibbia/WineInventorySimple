@@ -338,7 +338,6 @@ public class Desktop extends ViewGroup {
 	//--------------------------------------------------------------------------
 	// METHODS
 	//--------------------------------------------------------------------------
-
 	/**
 	 * @return : Unique groupName, either ViewGroup_1, ViewGroup_2, ...
 	 *           or UUID.
