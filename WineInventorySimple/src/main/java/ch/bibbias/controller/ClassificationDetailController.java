@@ -23,6 +23,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Controller for FXML View ClassificationDetail.fxml.
+ *
+ */
+
 @Controller
 public class ClassificationDetailController implements Initializable {
 

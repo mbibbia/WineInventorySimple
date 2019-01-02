@@ -37,6 +37,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Controller for FXML View RegionTable.fxml.
+ *
+ */
+
 @Controller
 public class RegionTableController implements Initializable {
 

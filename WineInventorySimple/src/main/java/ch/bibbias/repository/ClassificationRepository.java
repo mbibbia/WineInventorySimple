@@ -5,6 +5,14 @@ import org.springframework.stereotype.Repository;
 
 import ch.bibbias.bean.Classification;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Repository interface for classification beans extends JpaRepository
+ *         and adds bean specific methods
+ *
+ */
 @Repository
 public interface ClassificationRepository extends JpaRepository<Classification, Long> {
 

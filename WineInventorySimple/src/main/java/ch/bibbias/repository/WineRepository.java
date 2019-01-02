@@ -12,6 +12,14 @@ import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Repository interface for wine beans extends JpaRepository and adds
+ *         bean specific methods
+ *
+ */
 @Repository
 public interface WineRepository extends JpaRepository<Wine, Long> {
 

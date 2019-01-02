@@ -8,12 +8,25 @@ import ch.bibbias.bean.Country;
 import ch.bibbias.repository.CountryRepository;
 import ch.bibbias.service.CountryService;
 
+
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Persistence Service for country beans implements interface
+ *         CountryService, uses CountryRepository and implements bean specific
+ *         methods.
+ *
+ */
 @Component
 public class CountryServiceImpl implements CountryService {
 
 	@Autowired
 	private CountryRepository repository;
 
+	/**
+	 * Creates a new object.
+	 */
 	@Override
 	public Country save(Country entity) {
 		return repository.save(entity);

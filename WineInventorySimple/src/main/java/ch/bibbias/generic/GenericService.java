@@ -4,6 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * 
+ * @author Marco Bibbia
+ *
+ * @param <T>
+ * 
+ *        Interface with generic persistence methods
+ * 
+ */
+
 @Service
 public interface GenericService<T extends Object> {
 

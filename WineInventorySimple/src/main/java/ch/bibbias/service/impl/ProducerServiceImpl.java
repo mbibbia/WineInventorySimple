@@ -10,6 +10,15 @@ import ch.bibbias.bean.Region;
 import ch.bibbias.repository.ProducerRepository;
 import ch.bibbias.service.ProducerService;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Persistence Service for country beans implements interface
+ *         ProducerService, uses ProducerRepository and implements bean specific
+ *         methods.
+ *
+ */
 @Component
 public class ProducerServiceImpl implements ProducerService {
 

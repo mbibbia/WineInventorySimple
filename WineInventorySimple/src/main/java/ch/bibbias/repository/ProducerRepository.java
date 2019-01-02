@@ -9,6 +9,14 @@ import ch.bibbias.bean.Country;
 import ch.bibbias.bean.Producer;
 import ch.bibbias.bean.Region;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Repository interface for producer beans extends JpaRepository
+ *         and adds bean specific methods
+ *
+ */
 @Repository
 public interface ProducerRepository extends JpaRepository<Producer, Long> {
 

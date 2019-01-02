@@ -12,6 +12,14 @@ import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 import ch.bibbias.generic.GenericService;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Service interface for wine beans extends interface GenericService and
+ *         adds bean specific methods
+ *
+ */
 @Service
 public interface WineService extends GenericService<Wine> {
 

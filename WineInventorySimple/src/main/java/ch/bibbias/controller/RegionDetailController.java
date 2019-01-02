@@ -25,6 +25,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Controller for FXML View RegionDetail.fxml.
+ *
+ */
+
 @Controller
 public class RegionDetailController implements Initializable {
 

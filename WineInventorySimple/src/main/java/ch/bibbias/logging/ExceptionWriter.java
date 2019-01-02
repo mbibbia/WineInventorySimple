@@ -3,6 +3,13 @@ package ch.bibbias.logging;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         This class provides methods to get stacktrace as a string.
+ *
+ */
 public class ExceptionWriter extends PrintWriter {
 
 	public ExceptionWriter(Writer writer) {

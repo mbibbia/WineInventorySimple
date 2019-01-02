@@ -9,6 +9,15 @@ import ch.bibbias.bean.Region;
 import ch.bibbias.repository.RegionRepository;
 import ch.bibbias.service.RegionService;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Persistence Service for country beans implements interface
+ *         RegionService, uses RegionRepository and implements bean specific
+ *         methods.
+ *
+ */
 @Component
 public class RegionServiceImpl implements RegionService {
 

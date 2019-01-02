@@ -13,23 +13,29 @@ import javafx.scene.Parent;
  * 
  * @author Marco Bibbia
  * 
- *         Lädt die FXML Hierarchie wie in Methode load angegeben und
- *         registriert Spring als FXML Controller Factory. Erlaubt Spring und
- *         JavaFX nebeneinander zu laufen, sobald der Spring Application Context
- *         geladen wurde.
- *
+ *         Loads FXML hierarchy as in method load and registers Spring as FXML
+ *         Controller Factory. Allow Spring and JavaFX to run together, as soon
+ *         as Spring Application Context is loaded.
+ * 
  */
 @Component
 public class SpringFXMLLoader {
 	private final ResourceBundle resourceBundle;
 	private final ApplicationContext context;
 
-	//@Autowired
+	// @Autowired
 	public SpringFXMLLoader(ApplicationContext context, ResourceBundle resourceBundle) {
 		this.resourceBundle = resourceBundle;
 		this.context = context;
 	}
 
+	/**
+	 * Loads FXML hierarchy
+	 * 
+	 * @param fxmlPath
+	 * @return Parent scene
+	 * @throws IOException
+	 */
 	public Parent load(String fxmlPath) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setControllerFactory(context::getBean); // Spring now FXML Controller Factory
