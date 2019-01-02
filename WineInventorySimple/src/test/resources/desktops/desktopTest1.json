@@ -1,0 +1,28 @@
+{
+    "desktops": [
+        {
+            "name": "Desktop1",
+            "viewGroup": "group1"
+        }       
+    ],
+
+    "viewGroups": [
+        {
+            "name": "group1",
+            "orientation": "vertical",
+            "viewGroups": [
+                            {
+                                "type": "view",
+                                "name": "view1"
+                            }
+                          ]
+        }
+    ],
+
+    "views": [
+        {
+            "name": "view1",
+            "fxmlFile": "/fxml/dummy.fxml"
+        }
+    ]
+}

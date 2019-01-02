@@ -3,11 +3,10 @@ package ch.bibbias;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.util.ResourceBundle;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.Resource;
 import ch.bibbias.config.AppProperties;
 import ch.bibbias.config.StageManager;
 
@@ -24,13 +23,7 @@ public class Main extends Application {
 	protected ConfigurableApplicationContext springContext;
 	protected StageManager stageManager;
 
-	/*
-	 * Presets application properties and launches application
-	 */
 	public static void main(final String[] args) {
-		// Explicitly initialize singletons to avoid threading issues.
-		//AppProperties.init("src/main/resources/application.properties");
-		AppProperties.init(ResourceBundle.getBundle("Bundle").getString("applicationProperties.path"));
 		Application.launch(args);
 	}
 
@@ -50,9 +43,22 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
-		stageManager = springContext.getBean(StageManager.class, stage);
-		displayInitialScene();
+		Resource appProperties = springContext.getResource("classpath:application.properties");
 
+		// Explicitly initialize singletons to avoid threading issues.
+		AppProperties.init(appProperties.getInputStream());
+
+		stageManager = springContext.getBean(StageManager.class, stage);
+
+		Resource desktopProperties = springContext.getResource("classpath:config/desktop.json");
+		stageManager.init(desktopProperties.getInputStream());
+
+		// Explicitly initialize singletons to avoid threading issues.
+		AppProperties.init(appProperties.getInputStream());
+
+		stageManager = springContext.getBean(StageManager.class, stage);
+
+		displayInitialScene();
 	}
 	
 	/**
@@ -68,8 +74,7 @@ public class Main extends Application {
 	 * 
 	 */
 	protected void displayInitialScene() {
-		stageManager.switchSceneByName("Desktop Wine");
-
+		stageManager.displayInitialScene();
 	}
 
 	/**

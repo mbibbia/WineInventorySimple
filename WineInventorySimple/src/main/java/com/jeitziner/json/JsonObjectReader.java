@@ -3,6 +3,9 @@ package com.jeitziner.json;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +17,8 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.stream.JsonParsingException;
 
+import org.slf4j.Logger;
+
 /**
  * This class implements a static method "getJsonObjectFromFile" to 
  * create a JSON object for a given input file.
@@ -23,6 +28,9 @@ import javax.json.stream.JsonParsingException;
  *
  */
 public class JsonObjectReader {
+	
+	private static final Logger LOG = getLogger(JsonObjectReader.class);
+
 	/**
 	 * Private constructor, class cannot be instantiated.
 	 */
@@ -36,7 +44,7 @@ public class JsonObjectReader {
 	 */
 	public static JsonObject getJsonObjectFromFile(String filePath) {
 		if (!Files.exists(Paths.get(filePath))) {
-			System.out.println(String.format("File '%s' does not exist", filePath));
+			LOG.error(String.format("File '%s' does not exist", filePath));
 			return null;
 		}
 		
@@ -46,7 +54,7 @@ public class JsonObjectReader {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException ex) {
-			System.out.println(String.format("Cannot read file '%s'", filePath));
+			LOG.error(String.format("Cannot read file '%s'", filePath));
 		}
 
 		return jsonObject;		
@@ -69,13 +77,13 @@ public class JsonObjectReader {
 	 * @param {InputStream} is - 
 	 * @return {JsonObject}
 	 */
-	private static JsonObject getJsonObjectFromInputStream(InputStream is) {
+	public static JsonObject getJsonObjectFromInputStream(InputStream is) {
 		JsonObject jsonObject = null;
 		JsonReader jsonReader = Json.createReader(is);
 		try {
 			jsonObject = jsonReader.readObject();
 		} catch (JsonParsingException ex) {
-			//ex.printStackTrace();
+			LOG.error("Cannot parse json");
 		} finally {
 			jsonReader.close();
 		}

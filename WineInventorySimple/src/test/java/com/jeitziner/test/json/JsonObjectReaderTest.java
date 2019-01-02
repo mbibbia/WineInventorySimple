@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jeitziner.json;
+package com.jeitziner.test.json;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.jeitziner.json.JsonObjectReader;
 
 /**
  * @author Christian Jeitziner

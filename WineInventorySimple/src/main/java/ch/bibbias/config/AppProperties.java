@@ -2,18 +2,14 @@ package ch.bibbias.config;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 
 /**
  * @author Christian Jeitziner
- *
- */
-/**
- * @author christian
  *
  */
 public class AppProperties {
@@ -38,6 +34,10 @@ public class AppProperties {
 	 */
 	public Integer appVersion;
 	
+	/**
+	 * Name of initial desktop, see file desktop.json.
+	 */
+	public String initialDesktop;
 	
 	/**
 	 * Private constructor, AppProperties is a singleton and must be accessed
@@ -49,6 +49,7 @@ public class AppProperties {
 	private AppProperties(Properties properties) {
 		this.appName = getString(properties, "wineinventory.appName", "WineInventory Application");
 		this.appVersion = getInteger(properties, "wineinventory.appVersion", 99);
+		this.initialDesktop = getString(properties, "wineinventory.initialDesktop", "Desktop Wine");
 	}
 		
 	/**
@@ -56,10 +57,10 @@ public class AppProperties {
 	 * object. If propName is not a key in properties, the instance variable
 	 * is set to defaultValue.
 	 * 
-	 * @param properties
-	 * @param propName
-	 * @param defaultValue
-	 * @return
+	 * @param properties : Properties instance
+	 * @param propName : property name
+	 * @param defaultValue : default value for property
+	 * @return property value if propName is defined or default value
 	 */
 	private String getString(Properties properties, String propName, String defaultValue)
 	{
@@ -75,10 +76,10 @@ public class AppProperties {
 	 * object. If propName is not a key in properties, the instance variable
 	 * is set to defaultValue.
 	 * 
-	 * @param properties
-	 * @param propName
-	 * @param defaultValue
-	 * @return
+	 * @param properties : Properties instance
+	 * @param propName : property name
+	 * @param defaultValue : default value for property
+	 * @return property value if propName is defined or default value
 	 */
 	private Integer getInteger(Properties properties, String propName, Integer defaultValue)
 	{
@@ -92,9 +93,8 @@ public class AppProperties {
 			}
 		}
 		catch (NumberFormatException ex) {
-			LOG.error(String.format("Property %s is not a Integer", propName));			
+			LOG.error(String.format("Property %s is not an Integer", propName));
 		}
-		
 		return (intValue != null) ? intValue  : defaultValue; 
 	}
 	
@@ -105,23 +105,25 @@ public class AppProperties {
 	 * 
 	 * @param propFilePath : The path to the .properties file.
 	 */
-	public static void init(String propFilePath) {
+	public static void init(InputStream propertiesStream) {
 		Properties prop = new Properties();
 		try {
-			LOG.info(String.format("Load properties file: %s", propFilePath));
-		    prop.load(new FileInputStream(propFilePath));
+			LOG.info(String.format("Load properties file: %s", propertiesStream.toString()));
+		    prop.load(propertiesStream);
 		} 
 		catch (IOException ex) {
-			LOG.error(String.format("Properties file not found: %s", propFilePath));
+			LOG.error(String.format("Properties file not found: %s", propertiesStream.toString()));
 		    ex.printStackTrace();
 		}
 		
 		AppProperties.instance = new AppProperties(prop);
 	}
 	
+	/**
+	 * @return Singleton instance of AppProperties class.
+	 */
 	public static AppProperties getInstance() {
 		return AppProperties.instance;
 	}
-	
-	
+
 }

@@ -18,10 +18,6 @@ public class FxmlLoaderImpl implements FxmlLoader {
 	
 	@Override
 	public Parent load(String fxmlFilePath) {		
-		//Path path = Paths.get("data/logging.properties");
-		//boolean pathExists = Files.exists(path);
-		//System.out.println(String.format("Path exists: %s", pathExists));
-		
 		Parent rootNode = null;
 		try {
 			rootNode = springFXMLLoader.load(fxmlFilePath);
