@@ -3,6 +3,8 @@ package ch.bibbias;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.InputStream;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -28,20 +30,11 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Resource appProperties = springContext.getResource("classpath:application.properties");
-
 		// Explicitly initialize singletons to avoid threading issues.
-		AppProperties.init(appProperties.getInputStream());
+		AppProperties.init(getClass().getResourceAsStream("/application.properties"));
 
 		stageManager = springContext.getBean(StageManager.class, stage);
-
-		Resource desktopProperties = springContext.getResource("classpath:config/desktop.json");
-		stageManager.init(desktopProperties.getInputStream());
-
-		// Explicitly initialize singletons to avoid threading issues.
-		AppProperties.init(appProperties.getInputStream());
-
-		stageManager = springContext.getBean(StageManager.class, stage);
+		stageManager.init(getClass().getResourceAsStream("/config/desktop.json"));
 
 		displayInitialScene();
 	}

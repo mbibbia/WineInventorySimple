@@ -47,6 +47,10 @@
 				{
 					"type": "view",
 					"name": "wineTable"
+				},
+				{
+					"type": "view",
+					"name": "wineImage"
 				}
 			]
 		},
@@ -177,6 +181,10 @@
 		{
 			"name": "root",
 			"fxmlFile": "/fxml/Root.fxml"
+		},
+		{
+			"name": "wineImage",
+			"fxmlFile": "/fxml/WineImageDetail.fxml"
 		}
 	]
 }
