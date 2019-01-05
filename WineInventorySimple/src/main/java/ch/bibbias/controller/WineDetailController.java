@@ -1,11 +1,21 @@
 package ch.bibbias.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
@@ -20,6 +30,7 @@ import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.ClassificationService;
 import ch.bibbias.service.CountryService;
+import ch.bibbias.service.ImageService;
 import ch.bibbias.service.ProducerService;
 import ch.bibbias.service.WineService;
 import ch.bibbias.service.WineTypeService;
@@ -33,6 +44,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.scene.control.Alert.AlertType;
 
 /**
@@ -71,6 +85,9 @@ public class WineDetailController implements Initializable {
 	private ComboBox<Producer> producer;
 
 	@FXML
+	private ImageView image;
+
+	@FXML
 	private Button reset;
 
 	@FXML
@@ -98,6 +115,11 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private ProducerService producerService;
 
+	@Autowired
+	private ImageService imageService;
+
+	private ch.bibbias.bean.Image img = new ch.bibbias.bean.Image();
+
 	@Component
 	class ShowWineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
 
@@ -110,6 +132,9 @@ public class WineDetailController implements Initializable {
 			country.setValue(event.getWine().getCountry());
 			region.setValue(event.getWine().getRegion());
 			producer.setValue(event.getWine().getProducer());
+			if (event.getWine().getImage() != null) {
+				image.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
+			}
 		}
 
 	}
@@ -120,6 +145,7 @@ public class WineDetailController implements Initializable {
 		classification.setItems(loadClassifications());
 		country.setItems(loadCountries());
 		producer.setItems(loadProducers());
+
 	}
 
 	private ObservableList<WineType> loadTypes() {
@@ -176,6 +202,7 @@ public class WineDetailController implements Initializable {
 		country.getSelectionModel().clearSelection();
 		region.getSelectionModel().clearSelection();
 		producer.getSelectionModel().clearSelection();
+		image.setImage(null);
 
 	}
 
@@ -186,6 +213,47 @@ public class WineDetailController implements Initializable {
 			ObservableList<Region> regions = FXCollections.observableArrayList(country.getValue().getRegions());
 			region.setItems(regions);
 		}
+	}
+
+	@FXML
+	private void handleImage() {
+		FileChooser fileChooser = new FileChooser();
+		File file = fileChooser.showOpenDialog(image.getScene().getWindow());
+		byte[] bytesArray = new byte[(int) file.length()];
+
+		try {
+			FileInputStream is = new FileInputStream(file);
+			if (is != null) {
+				image.setImage(new Image(is));
+								
+				 
+				 is.read(bytesArray); //read file into bytes[]
+				 is.close();				
+				
+				
+				
+				img.setName(file.getName());
+				img.setType(getFileExtension(file));
+				img.setData(bytesArray);
+				imageService.save(img);
+				
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private static String getFileExtension(File file) {
+		String fileName = file.getName();
+		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+			return fileName.substring(fileName.lastIndexOf(".") + 1);
+		else
+			return "";
 	}
 
 	@FXML
@@ -206,6 +274,7 @@ public class WineDetailController implements Initializable {
 			wine.setCountry(getCountry());
 			wine.setRegion(getRegion());
 			wine.setProducer(getProducer());
+			wine.setImage(img);
 
 			Wine newWine = wineService.save(wine);
 
@@ -221,6 +290,8 @@ public class WineDetailController implements Initializable {
 			wine.setCountry(getCountry());
 			wine.setRegion(getRegion());
 			wine.setProducer(getProducer());
+			wine.setImage(img);
+
 			Wine updatedWine = wineService.update(wine);
 			updateAlert(updatedWine);
 
@@ -252,6 +323,35 @@ public class WineDetailController implements Initializable {
 		alert.setHeaderText(null);
 		alert.setContentText("The wine " + wine.getName() + " has been updated.");
 		alert.showAndWait();
+	}
+
+	private byte[] readBytes(InputStream stream) throws IOException {
+		if (stream == null)
+			return new byte[] {};
+		byte[] buffer = new byte[1024];
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		boolean error = false;
+		try {
+			int numRead = 0;
+			while ((numRead = stream.read(buffer)) > -1) {
+				output.write(buffer, 0, numRead);
+			}
+		} catch (IOException e) {
+			error = true; // this error should be thrown, even if there is an error closing stream
+			throw e;
+		} catch (RuntimeException e) {
+			error = true; // this error should be thrown, even if there is an error closing stream
+			throw e;
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				if (!error)
+					throw e;
+			}
+		}
+		output.flush();
+		return output.toByteArray();
 	}
 
 }

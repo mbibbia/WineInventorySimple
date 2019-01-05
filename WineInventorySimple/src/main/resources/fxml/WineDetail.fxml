@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -69,6 +70,11 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </ComboBox>
+            <ImageView fx:id="image" fitHeight="150.0" fitWidth="246.0" onMouseClicked="#handleImage" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </ImageView>
             <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
                <children>
                   <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
