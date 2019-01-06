@@ -38,6 +38,30 @@
 		},
 		{
 			"name": "wineGroup",
+			"orientation": "vertical",
+			"viewGroups": [
+				{
+					"type": "viewGroup",
+					"name": "wineGroupDetailAndImage"
+				},
+				{
+					"type": "viewGroup",
+					"name": "wineGroupTable"
+				}
+			]
+		},
+		{
+			"name": "wineGroupTable",
+			"orientation": "horizontal",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "wineTable"
+				}
+			]
+		},
+		{
+			"name": "wineGroupDetailAndImage",
 			"orientation": "horizontal",
 			"viewGroups": [
 				{
@@ -46,11 +70,25 @@
 				},
 				{
 					"type": "view",
-					"name": "wineTable"
+					"name": "wineImage"
+				}
+			]
+		},
+		{
+			"name": "wineGroup2",
+			"orientation": "horizontal",
+			"viewGroups": [
+				{
+					"type": "view",
+					"name": "wineDetail"
 				},
 				{
 					"type": "view",
 					"name": "wineImage"
+				},
+				{
+					"type": "view",
+					"name": "wineTable"
 				}
 			]
 		},
