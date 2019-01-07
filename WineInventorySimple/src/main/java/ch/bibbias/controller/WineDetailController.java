@@ -1,5 +1,6 @@
 package ch.bibbias.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,6 +11,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -219,31 +222,27 @@ public class WineDetailController implements Initializable {
 	private void handleImage() {
 		FileChooser fileChooser = new FileChooser();
 		File file = fileChooser.showOpenDialog(image.getScene().getWindow());
-		byte[] bytesArray = new byte[(int) file.length()];
+		
+		
+		
 
+		BufferedImage bImage;
 		try {
+			bImage = ImageIO.read(file);
 			FileInputStream is = new FileInputStream(file);
-			if (is != null) {
-				image.setImage(new Image(is));
-								
-				 
-				 is.read(bytesArray); //read file into bytes[]
-				 is.close();				
-				
-				
-				
-				img.setName(file.getName());
-				img.setType(getFileExtension(file));
-				img.setData(bytesArray);
-				imageService.save(img);
-				
-			}
-		} catch (FileNotFoundException e) {
+			image.setImage(new Image(is));
+			
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+			ImageIO.write(bImage, "jpg", bos);
+			byte[] data = bos.toByteArray();
+			img.setName("Testbild");
+			img.setType("JPG");
+			img.setData(data);
+			imageService.save(img);
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 
 	}
