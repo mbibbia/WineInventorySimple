@@ -1,5 +1,6 @@
 package ch.bibbias.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -28,7 +29,7 @@ public class WineImageDetailController implements Initializable {
 
 	@FXML
 	private ImageView imageView;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -37,21 +38,29 @@ public class WineImageDetailController implements Initializable {
 	class ShowWineImageDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
 		@Override
 		public void onApplicationEvent(WineDetailsEvent event) {
-			InputStream is = getClass().getResourceAsStream("/img/Wine2.jpeg");
-			if (is != null) {
-		        Image image = new Image(is);
-		        imageView.setImage(image);
+			imageView.setImage(null);
+			if (event.getWine().getImage() != null) {
+				System.out.println(event.getWine().getImage().getName());
+				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
 			}
+
+			/*
+			 * InputStream is = getClass().getResourceAsStream("/img/Wine2.jpeg"); if (is !=
+			 * null) { Image image = new Image(is); imageView.setImage(image);
+			 * 
+			 * }
+			 */
 		}
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        AnchorPane parent = (AnchorPane)imageView.getParent();
-        imageView.fitWidthProperty().bind(parent.widthProperty());
-        imageView.fitHeightProperty().bind(parent.heightProperty());
+		imageView.setImage(null);
+		AnchorPane parent = (AnchorPane) imageView.getParent();
+		imageView.fitWidthProperty().bind(parent.widthProperty());
+		imageView.fitHeightProperty().bind(parent.heightProperty());
 	}
-	
+
 	private Image getImageView() {
 		return imageView.getImage();
 	}

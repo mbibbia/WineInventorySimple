@@ -1,15 +1,11 @@
 package ch.bibbias.controller;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -18,12 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ch.bibbias.bean.Classification;
 import ch.bibbias.bean.Country;
+import ch.bibbias.bean.Image;
 import ch.bibbias.bean.Producer;
 import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
@@ -47,8 +43,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert.AlertType;
 
@@ -88,8 +82,8 @@ public class WineDetailController implements Initializable {
 	private ComboBox<Producer> producer;
 
 	@FXML
-	private ImageView image;
-
+	private Button browseImage;
+	
 	@FXML
 	private Button reset;
 
@@ -121,7 +115,7 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private ImageService imageService;
 
-	private ch.bibbias.bean.Image img = new ch.bibbias.bean.Image();
+	private Image image = new Image();
 
 	@Component
 	class ShowWineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
@@ -135,9 +129,7 @@ public class WineDetailController implements Initializable {
 			country.setValue(event.getWine().getCountry());
 			region.setValue(event.getWine().getRegion());
 			producer.setValue(event.getWine().getProducer());
-			if (event.getWine().getImage() != null) {
-				image.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
-			}
+			
 		}
 
 	}
@@ -205,7 +197,6 @@ public class WineDetailController implements Initializable {
 		country.getSelectionModel().clearSelection();
 		region.getSelectionModel().clearSelection();
 		producer.getSelectionModel().clearSelection();
-		image.setImage(null);
 
 	}
 
@@ -219,27 +210,20 @@ public class WineDetailController implements Initializable {
 	}
 
 	@FXML
-	private void handleImage() {
+	private void browseImage() {
 		FileChooser fileChooser = new FileChooser();
-		File file = fileChooser.showOpenDialog(image.getScene().getWindow());
+		File file = fileChooser.showOpenDialog(browseImage.getScene().getWindow());
 		
-		
-		
-
 		BufferedImage bImage;
 		try {
 			bImage = ImageIO.read(file);
-			FileInputStream is = new FileInputStream(file);
-			image.setImage(new Image(is));
-			
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
 			ImageIO.write(bImage, "jpg", bos);
 			byte[] data = bos.toByteArray();
-			img.setName("Testbild");
-			img.setType("JPG");
-			img.setData(data);
-			imageService.save(img);
+			image.setName(file.getName());
+			image.setType(getFileExtension(file));
+			image.setData(data);
+			imageService.save(image);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -273,7 +257,7 @@ public class WineDetailController implements Initializable {
 			wine.setCountry(getCountry());
 			wine.setRegion(getRegion());
 			wine.setProducer(getProducer());
-			wine.setImage(img);
+			wine.setImage(image);
 
 			Wine newWine = wineService.save(wine);
 
@@ -289,7 +273,8 @@ public class WineDetailController implements Initializable {
 			wine.setCountry(getCountry());
 			wine.setRegion(getRegion());
 			wine.setProducer(getProducer());
-			wine.setImage(img);
+			wine.setImage(image);
+			System.out.println("Update " + image.getName());
 
 			Wine updatedWine = wineService.update(wine);
 			updateAlert(updatedWine);
