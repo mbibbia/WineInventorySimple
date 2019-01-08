@@ -115,7 +115,7 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private ImageService imageService;
 
-	private Image image = new Image();
+	private Image image;
 
 	@Component
 	class ShowWineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
@@ -220,6 +220,7 @@ public class WineDetailController implements Initializable {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ImageIO.write(bImage, "jpg", bos);
 			byte[] data = bos.toByteArray();
+			image = new Image();
 			image.setName(file.getName());
 			image.setType(getFileExtension(file));
 			image.setData(data);

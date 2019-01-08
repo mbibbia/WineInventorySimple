@@ -15,8 +15,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import ch.bibbias.bean.Wine;
 import ch.bibbias.config.StageManager;
+import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
+import ch.bibbias.service.WineService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -34,22 +37,32 @@ public class WineImageDetailController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private WineService wineService;
+
+	@Component
+	class SaveWineEventHandler implements ApplicationListener<SaveWineEvent> {
+
+		@Override
+		public void onApplicationEvent(SaveWineEvent event) {
+
+			imageView.setImage(null);
+			if (event.getWine().getImage() != null) {
+				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
+			}
+		}
+
+	}
+
 	@Component
 	class ShowWineImageDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
 		@Override
 		public void onApplicationEvent(WineDetailsEvent event) {
 			imageView.setImage(null);
 			if (event.getWine().getImage() != null) {
-				System.out.println(event.getWine().getImage().getName());
 				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
 			}
 
-			/*
-			 * InputStream is = getClass().getResourceAsStream("/img/Wine2.jpeg"); if (is !=
-			 * null) { Image image = new Image(is); imageView.setImage(image);
-			 * 
-			 * }
-			 */
 		}
 	}
 
