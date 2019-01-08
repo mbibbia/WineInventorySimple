@@ -8,6 +8,15 @@ import ch.bibbias.bean.WineType;
 import ch.bibbias.repository.WineTypeRepository;
 import ch.bibbias.service.WineTypeService;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Persistence Service for country beans implements interface
+ *         WineTypeService, uses WineTypeRepository and implements bean specific
+ *         methods.
+ *
+ */
 @Component
 public class WineTypeServiceImpl implements WineTypeService {
 

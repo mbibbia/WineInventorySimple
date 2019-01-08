@@ -9,6 +9,14 @@ import ch.bibbias.bean.Producer;
 import ch.bibbias.bean.Region;
 import ch.bibbias.generic.GenericService;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Service interface for producer beans extends interface GenericService
+ *         and adds bean specific methods
+ *
+ */
 @Service
 public interface ProducerService extends GenericService<Producer> {
 

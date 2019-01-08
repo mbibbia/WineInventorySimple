@@ -1,5 +1,6 @@
 package ch.bibbias.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -14,43 +15,65 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import ch.bibbias.bean.Wine;
 import ch.bibbias.config.StageManager;
+import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
+import ch.bibbias.service.WineService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 
 @Controller
 public class WineImageDetailController implements Initializable {
 
 	@FXML
 	private ImageView imageView;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+
+	@Autowired
+	private WineService wineService;
+
+	@Component
+	class SaveWineEventHandler implements ApplicationListener<SaveWineEvent> {
+
+		@Override
+		public void onApplicationEvent(SaveWineEvent event) {
+
+			imageView.setImage(null);
+			if (event.getWine().getImage() != null) {
+				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
+			}
+		}
+
+	}
 
 	@Component
 	class ShowWineImageDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
 		@Override
 		public void onApplicationEvent(WineDetailsEvent event) {
-			InputStream is = getClass().getResourceAsStream("/img/Wine2.jpeg");
-			if (is != null) {
-		        Image image = new Image(is);
-		        imageView.setImage(image);
+			imageView.setImage(null);
+			if (event.getWine().getImage() != null) {
+				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
 			}
+
 		}
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        AnchorPane parent = (AnchorPane)imageView.getParent();
-        imageView.fitWidthProperty().bind(parent.widthProperty());
-        imageView.fitHeightProperty().bind(parent.heightProperty());
+		imageView.setImage(null);
+		AnchorPane parent = (AnchorPane) imageView.getParent();
+		imageView.fitWidthProperty().bind(parent.widthProperty());
+		imageView.fitHeightProperty().bind(parent.heightProperty());
 	}
-	
+
 	private Image getImageView() {
 		return imageView.getImage();
 	}

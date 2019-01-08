@@ -39,6 +39,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Controller for FXML View Wine.fxml.
+ *
+ */
+
 @Controller
 public class WineController implements Initializable {
 

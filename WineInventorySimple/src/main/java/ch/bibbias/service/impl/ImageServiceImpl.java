@@ -4,31 +4,31 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.bibbias.bean.Classification;
-import ch.bibbias.repository.ClassificationRepository;
-import ch.bibbias.service.ClassificationService;
+import ch.bibbias.bean.Image;
+import ch.bibbias.repository.ImageRepository;
+import ch.bibbias.service.ImageService;
 
 /**
  * 
  * @author Marco Bibbia
  * 
- *         Persistence Service for classification beans implements interface
- *         ClassificationService, uses ClassificationRepository and implements
- *         bean specific methods.
+ *         Persistence Service for image beans implements interface
+ *         ImageService, uses ImageRepository and implements bean specific
+ *         methods.
  *
  */
 
 @Component
-public class ClassificationServiceImpl implements ClassificationService {
+public class ImageServiceImpl implements ImageService {
 
 	@Autowired
-	private ClassificationRepository repository;
+	private ImageRepository repository;
 
 	/**
 	 * Creates new object.
 	 */
 	@Override
-	public Classification save(Classification entity) {
+	public Image save(Image entity) {
 		return repository.save(entity);
 	}
 
@@ -36,7 +36,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 	 * Updates existing object
 	 */
 	@Override
-	public Classification update(Classification entity) {
+	public Image update(Image entity) {
 		return repository.save(entity);
 	}
 
@@ -44,7 +44,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 	 * Deletes an object
 	 */
 	@Override
-	public void delete(Classification entity) {
+	public void delete(Image entity) {
 		repository.delete(entity);
 	}
 
@@ -60,7 +60,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 	 * Deletes multiple objects
 	 */
 	@Override
-	public void deleteInBatch(List<Classification> entities) {
+	public void deleteInBatch(List<Image> entities) {
 		repository.deleteInBatch(entities);
 	}
 
@@ -68,7 +68,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 	 * Find an object by id
 	 */
 	@Override
-	public Classification find(Long id) {
+	public Image find(Long id) {
 		return repository.getOne(id);
 	}
 
@@ -76,7 +76,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 	 * Find all objects
 	 */
 	@Override
-	public List<Classification> findAll() {
+	public List<Image> findAll() {
 		return repository.findAll();
 	}
 
@@ -84,7 +84,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 	 * Find an object by name
 	 */
 	@Override
-	public Classification findByName(String name) {
+	public Image findByName(String name) {
 		return repository.findByName(name);
 	}
 

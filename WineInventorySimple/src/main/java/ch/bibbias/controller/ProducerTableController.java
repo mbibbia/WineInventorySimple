@@ -38,6 +38,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Controller for FXML View ProducerTable.fxml.
+ *
+ */
+
 @Controller
 public class ProducerTableController implements Initializable {
 	@FXML

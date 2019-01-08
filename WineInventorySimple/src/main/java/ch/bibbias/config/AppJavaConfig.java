@@ -13,6 +13,14 @@ import org.springframework.context.annotation.Scope;
 import ch.bibbias.logging.ExceptionWriter;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         This class contains configurations for Spring Boot Application.
+ *
+ */
+
 @Configuration
 public class AppJavaConfig {
 
@@ -30,11 +38,23 @@ public class AppJavaConfig {
 		return new ExceptionWriter(new StringWriter());
 	}
 
+	/**
+	 * Needed to get data from Bundle.properties (e.g. titles).
+	 * 
+	 * @return ResourceBundle contains resource bundle data
+	 */
 	@Bean
 	public ResourceBundle resourceBundle() {
 		return ResourceBundle.getBundle("Bundle");
 	}
 
+	/**
+	 * Needed to handle stages and scenes.
+	 * 
+	 * @param stage
+	 * @return StageManager contains stage utility methods
+	 * @throws IOException
+	 */
 	@Bean
 	@Lazy(value = true) // Stage only created after Spring context bootstrap
 	public StageManager stageManager(Stage stage) throws IOException {

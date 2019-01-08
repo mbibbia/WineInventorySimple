@@ -5,6 +5,14 @@ import org.springframework.stereotype.Repository;
 
 import ch.bibbias.bean.Country;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Repository interface for country beans extends JpaRepository
+ *         and adds bean specific methods
+ *
+ */
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
 

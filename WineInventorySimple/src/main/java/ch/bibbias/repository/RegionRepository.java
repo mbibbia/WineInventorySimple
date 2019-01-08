@@ -8,6 +8,14 @@ import org.springframework.stereotype.Repository;
 import ch.bibbias.bean.Country;
 import ch.bibbias.bean.Region;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Repository interface for region beans extends JpaRepository and
+ *         adds bean specific methods
+ *
+ */
 @Repository
 public interface RegionRepository extends JpaRepository<Region, Long> {
 

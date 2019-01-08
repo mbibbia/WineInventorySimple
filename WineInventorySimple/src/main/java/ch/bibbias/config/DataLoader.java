@@ -18,6 +18,13 @@ import ch.bibbias.service.RegionService;
 import ch.bibbias.service.WineService;
 import ch.bibbias.service.WineTypeService;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         This class is used to preload data when application is started.
+ *
+ */
 @Component
 public class DataLoader implements ApplicationRunner {
 
@@ -44,6 +51,9 @@ public class DataLoader implements ApplicationRunner {
 
 	}
 
+	/**
+	 * Method is processed implicitly and runs implemented methods.
+	 */
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
@@ -172,13 +182,13 @@ public class DataLoader implements ApplicationRunner {
 		region.setName("Zürich");
 		region.setCountry(country);
 		regionService.save(region);
-		
+
 		country = countryService.findByCode("IT");
 		region = new Region();
 		region.setName("Piemont");
 		region.setCountry(country);
 		regionService.save(region);
-		
+
 	}
 
 	private void initProducers() {

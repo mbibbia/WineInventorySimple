@@ -5,19 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
  * 
- * @author Marco Bibbia
+ * @author Christian Jeitziner / Marco Bibbia
  * 
- *         This class is a bean / model of wine type and is used to persist data
- *         with wine type repository (JPA).
+ *         This class is a bean / model of image and is used to persist data
+ *         with image repository (JPA).
  */
-
 @Entity
-@Table(name = "WineType")
-public class WineType {
+@Table(name = "Image")
+public class Image {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,45 +26,43 @@ public class WineType {
 
 	private String name;
 
-	/**
-	 * Returns identification of wine type bean.
-	 * 
-	 * @return Wine Type Identification (e.g. 1)
-	 */
+	private String type;
+
+	@Lob
+	private byte[] data;
+	
 	public long getId() {
 		return id;
 	}
 
-	/**
-	 * Receives identification of wine type and sets value in wine type bean.
-	 * 
-	 * @param id
-	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * Returns name of wien type bean.
-	 * 
-	 * @return Wine Type Name (e.g. Rotwein)
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Receives name of wine type and sets value in wine type bean.
-	 * 
-	 * @param name
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Converts data of wine type into string value.
-	 */
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+
 	@Override
 	public String toString() {
 		return this.name;

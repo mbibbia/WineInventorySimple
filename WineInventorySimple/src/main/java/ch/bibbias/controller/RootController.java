@@ -13,6 +13,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 
+/**
+ * 
+ * @author Marco Bibbia
+ * 
+ *         Controller for FXML View Root.fxml.
+ *
+ */
+
 @Controller
 public class RootController implements Initializable {
 

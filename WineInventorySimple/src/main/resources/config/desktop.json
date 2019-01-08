@@ -1,6 +1,10 @@
 {
 	"desktops": [
 		{
+			"name": "Desktop All",
+			"viewGroup": "allGroup"
+		},
+		{
 			"name": "Desktop Wine",
 			"viewGroup": "wineGroup"
 		},
@@ -160,6 +164,25 @@
 					"type": "view",
 					"name": "producerTable"
 				}
+			]
+		},
+				{
+			"name": "allGroup",
+			"orientation": "horizontal",
+			"viewGroups": [
+				{
+					"type": "viewGroup",
+					"name": "wineGroup"
+				},
+				{
+					"type": "viewGroup",
+					"name": "countryGroup"
+				},
+								{
+					"type": "viewGroup",
+					"name": "regionGroup"
+				}
+				
 			]
 		}
 	],

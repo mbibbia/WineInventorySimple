@@ -9,9 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
-
 import ch.bibbias.config.AppProperties;
 import ch.bibbias.config.StageManager;
+
+/**
+ * 
+ * @author Marco Bibbia
+ *
+ *         Main class to start application.
+ */
 
 @SpringBootApplication
 public class Main extends Application {
@@ -23,11 +29,20 @@ public class Main extends Application {
 		Application.launch(args);
 	}
 
+	/**
+	 * Initializes Spring Context
+	 * 
+	 */
 	@Override
 	public void init() throws Exception {
 		springContext = springBootApplicationContext();
 	}
 
+	/**
+	 * Method is called from context, loads Stage Manager and displays initial
+	 * scene.
+	 * 
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		// Explicitly initialize singletons to avoid threading issues.
@@ -38,20 +53,27 @@ public class Main extends Application {
 
 		displayInitialScene();
 	}
-
+	
+	/**
+	 * Stops application
+	 */
 	@Override
 	public void stop() throws Exception {
 		springContext.close();
 	}
 
 	/**
-	 * Useful to override this method by sub-classes wishing to change the first
-	 * Scene to be displayed on startup. Example: Functional tests on main window.
+	 * Sets the first Scene to be displayed on startup.
+	 * 
 	 */
 	protected void displayInitialScene() {
 		stageManager.displayInitialScene();
 	}
 
+	/**
+	 * 
+	 * @return Configurable Application Context
+	 */
 	private ConfigurableApplicationContext springBootApplicationContext() {
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(Main.class);
 		String[] args = getParameters().getRaw().stream().toArray(String[]::new);

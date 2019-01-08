@@ -69,6 +69,11 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </ComboBox>
+            <Button fx:id="browseImage" mnemonicParsing="false" onAction="#browseImage" prefHeight="26.0" prefWidth="85.0" text="Image...">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </Button>
             <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
                <children>
                   <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
