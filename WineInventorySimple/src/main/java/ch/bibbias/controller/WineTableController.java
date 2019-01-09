@@ -131,6 +131,7 @@ public class WineTableController implements Initializable {
 	}
 
 	Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>> cellFactory = new Callback<TableColumn<Wine, Boolean>, TableCell<Wine, Boolean>>() {
+
 		@Override
 		public TableCell<Wine, Boolean> call(final TableColumn<Wine, Boolean> param) {
 			final TableCell<Wine, Boolean> cell = new TableCell<Wine, Boolean>() {
@@ -167,13 +168,12 @@ public class WineTableController implements Initializable {
 			return cell;
 		}
 	};
-	
+
 	@FXML
 	void editWine(ActionEvent event) {
 		Wine wine = wineTable.getSelectionModel().getSelectedItem();
 		raiseEventShowWine(wine);
-		
-		
+
 	}
 
 	@FXML

@@ -4,10 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,7 @@ import ch.bibbias.bean.Region;
 import ch.bibbias.bean.Wine;
 import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
+import ch.bibbias.controller.validation.ControllerValidation;
 import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.ClassificationService;
@@ -83,7 +82,7 @@ public class WineDetailController implements Initializable {
 
 	@FXML
 	private Button browseImage;
-	
+
 	@FXML
 	private Button reset;
 
@@ -115,6 +114,9 @@ public class WineDetailController implements Initializable {
 	@Autowired
 	private ImageService imageService;
 
+	@Autowired
+	private ControllerValidation validation;
+
 	private Image image;
 
 	@Component
@@ -129,7 +131,13 @@ public class WineDetailController implements Initializable {
 			country.setValue(event.getWine().getCountry());
 			region.setValue(event.getWine().getRegion());
 			producer.setValue(event.getWine().getProducer());
-			
+			if (event.getWine().getImage() != null) {
+				browseImage.setText("Change Image...");
+			} else {
+				browseImage.setText("Add Image...");
+			}
+			saveWine.setDisable(false);
+
 		}
 
 	}
@@ -140,6 +148,8 @@ public class WineDetailController implements Initializable {
 		classification.setItems(loadClassifications());
 		country.setItems(loadCountries());
 		producer.setItems(loadProducers());
+		saveWine.setDisable(true);
+		browseImage.setText("Add Image...");
 
 	}
 
@@ -186,6 +196,8 @@ public class WineDetailController implements Initializable {
 	@FXML
 	void reset(ActionEvent event) {
 		clearFields();
+		saveWine.setDisable(true);
+		browseImage.setText("Add Image...");
 	}
 
 	private void clearFields() {
@@ -197,6 +209,8 @@ public class WineDetailController implements Initializable {
 		country.getSelectionModel().clearSelection();
 		region.getSelectionModel().clearSelection();
 		producer.getSelectionModel().clearSelection();
+		browseImage.setText("Add Image...");
+		saveWine.setDisable(true);
 
 	}
 
@@ -210,10 +224,16 @@ public class WineDetailController implements Initializable {
 	}
 
 	@FXML
+	private void handleNameChanged() {
+		saveWine.setDisable(false);
+
+	}
+
+	@FXML
 	private void browseImage() {
 		FileChooser fileChooser = new FileChooser();
 		File file = fileChooser.showOpenDialog(browseImage.getScene().getWindow());
-		
+
 		BufferedImage bImage;
 		try {
 			bImage = ImageIO.read(file);
@@ -225,6 +245,7 @@ public class WineDetailController implements Initializable {
 			image.setType(getFileExtension(file));
 			image.setData(data);
 			imageService.save(image);
+			browseImage.setText("Change Image...");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -243,47 +264,44 @@ public class WineDetailController implements Initializable {
 	@FXML
 	private void saveWine(ActionEvent event) {
 
-		/*
-		 * if (validate("Name", getName(), "[a-zA-Z]+") && validate("Type", getType(),
-		 * "[a-zA-Z]+") && emptyValidation("Classification", getClassification() &&
-		 * emptyValidation("Country", getCountry() {
-		 */
+		// if (validation.validate("Name", getName(), "[a-zA-Z]+")) {
+		if (validation.emptyValidation("Name", getName() == null)) {
 
-		if (wineId.getText() == null || wineId.getText() == "") {
+			if (wineId.getText() == null || wineId.getText() == "") {
 
-			Wine wine = new Wine();
-			wine.setName(getName());
-			wine.setType(getType());
-			wine.setClassification(getClassification());
-			wine.setCountry(getCountry());
-			wine.setRegion(getRegion());
-			wine.setProducer(getProducer());
-			wine.setImage(image);
+				Wine wine = new Wine();
+				wine.setName(getName());
+				wine.setType(getType());
+				wine.setClassification(getClassification());
+				wine.setCountry(getCountry());
+				wine.setRegion(getRegion());
+				wine.setProducer(getProducer());
+				wine.setImage(image);
 
-			Wine newWine = wineService.save(wine);
+				Wine newWine = wineService.save(wine);
+				raiseEventSaveWine(newWine);
 
-			saveAlert(newWine);
+				saveAlert(newWine);
 
-			raiseEventSaveWine(newWine);
+			} else {
+				Wine wine = wineService.find(Long.parseLong(wineId.getText()));
+				wine.setName(getName());
+				wine.setType(getType());
+				wine.setClassification(getClassification());
+				wine.setCountry(getCountry());
+				wine.setRegion(getRegion());
+				wine.setProducer(getProducer());
+				wine.setImage(image);
 
-		} else {
-			Wine wine = wineService.find(Long.parseLong(wineId.getText()));
-			wine.setName(getName());
-			wine.setType(getType());
-			wine.setClassification(getClassification());
-			wine.setCountry(getCountry());
-			wine.setRegion(getRegion());
-			wine.setProducer(getProducer());
-			wine.setImage(image);
-			System.out.println("Update " + image.getName());
+				Wine updatedWine = wineService.update(wine);
+				raiseEventSaveWine(updatedWine);
+				updateAlert(updatedWine);
 
-			Wine updatedWine = wineService.update(wine);
-			updateAlert(updatedWine);
+			}
 
-			raiseEventSaveWine(updatedWine);
+			clearFields();
+
 		}
-
-		clearFields();
 
 	}
 
@@ -304,39 +322,10 @@ public class WineDetailController implements Initializable {
 	private void updateAlert(Wine wine) {
 
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("User updated successfully.");
+		alert.setTitle("Wine updated successfully.");
 		alert.setHeaderText(null);
 		alert.setContentText("The wine " + wine.getName() + " has been updated.");
 		alert.showAndWait();
-	}
-
-	private byte[] readBytes(InputStream stream) throws IOException {
-		if (stream == null)
-			return new byte[] {};
-		byte[] buffer = new byte[1024];
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		boolean error = false;
-		try {
-			int numRead = 0;
-			while ((numRead = stream.read(buffer)) > -1) {
-				output.write(buffer, 0, numRead);
-			}
-		} catch (IOException e) {
-			error = true; // this error should be thrown, even if there is an error closing stream
-			throw e;
-		} catch (RuntimeException e) {
-			error = true; // this error should be thrown, even if there is an error closing stream
-			throw e;
-		} finally {
-			try {
-				stream.close();
-			} catch (IOException e) {
-				if (!error)
-					throw e;
-			}
-		}
-		output.flush();
-		return output.toByteArray();
 	}
 
 }

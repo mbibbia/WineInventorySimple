@@ -1,31 +1,23 @@
 package ch.bibbias.controller;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
-import ch.bibbias.bean.Wine;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.event.SaveWineEvent;
 import ch.bibbias.event.WineDetailsEvent;
-import ch.bibbias.service.WineService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 
 @Controller
 public class WineImageDetailController implements Initializable {
@@ -36,9 +28,6 @@ public class WineImageDetailController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
-
-	@Autowired
-	private WineService wineService;
 
 	@Component
 	class SaveWineEventHandler implements ApplicationListener<SaveWineEvent> {
@@ -74,7 +63,4 @@ public class WineImageDetailController implements Initializable {
 		imageView.fitHeightProperty().bind(parent.heightProperty());
 	}
 
-	private Image getImageView() {
-		return imageView.getImage();
-	}
 }
