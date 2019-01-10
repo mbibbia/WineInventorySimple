@@ -25,6 +25,7 @@ import ch.bibbias.bean.WineType;
 import ch.bibbias.config.StageManager;
 import ch.bibbias.controller.validation.ControllerValidation;
 import ch.bibbias.event.SaveWineEvent;
+import ch.bibbias.event.ShowImageEvent;
 import ch.bibbias.event.WineDetailsEvent;
 import ch.bibbias.service.ClassificationService;
 import ch.bibbias.service.CountryService;
@@ -234,21 +235,36 @@ public class WineDetailController implements Initializable {
 		FileChooser fileChooser = new FileChooser();
 		File file = fileChooser.showOpenDialog(browseImage.getScene().getWindow());
 
-		BufferedImage bImage;
-		try {
-			bImage = ImageIO.read(file);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ImageIO.write(bImage, "jpg", bos);
-			byte[] data = bos.toByteArray();
-			image = new Image();
-			image.setName(file.getName());
-			image.setType(getFileExtension(file));
-			image.setData(data);
-			imageService.save(image);
-			browseImage.setText("Change Image...");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		if (file != null) {
+
+			BufferedImage bImage;
+			try {
+				bImage = ImageIO.read(file);
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ImageIO.write(bImage, "jpg", bos);
+				byte[] data = bos.toByteArray();
+				image = new Image();
+				image.setName(file.getName());
+				image.setType(getFileExtension(file));
+				image.setData(data);
+				imageService.save(image);
+				browseImage.setText("Change Image...");
+				raiseEventShowImage(image);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+	}
+
+	@FXML
+	private void removeImage() {
+		image = null;
+		if (wineId.getText() != null || wineId.getText() != "") {
+			Wine wine = wineService.find(Long.parseLong(wineId.getText()));
+			wine.setImage(image);
+			raiseEventShowImage(image);
 		}
 
 	}
@@ -308,6 +324,11 @@ public class WineDetailController implements Initializable {
 	private void raiseEventSaveWine(final Wine wine) {
 		SaveWineEvent wineEvent = new SaveWineEvent(this, wine);
 		applicationEventPublisher.publishEvent(wineEvent);
+	}
+
+	private void raiseEventShowImage(Image image) {
+		ShowImageEvent imageEvent = new ShowImageEvent(this, image);
+		applicationEventPublisher.publishEvent(imageEvent);
 	}
 
 	private void saveAlert(Wine wine) {

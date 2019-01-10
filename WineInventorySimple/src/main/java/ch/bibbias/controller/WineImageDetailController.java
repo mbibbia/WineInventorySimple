@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import ch.bibbias.config.StageManager;
 import ch.bibbias.event.SaveWineEvent;
+import ch.bibbias.event.ShowImageEvent;
 import ch.bibbias.event.WineDetailsEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,6 +31,30 @@ public class WineImageDetailController implements Initializable {
 	private StageManager stageManager;
 
 	@Component
+	class WineDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
+		@Override
+		public void onApplicationEvent(WineDetailsEvent event) {
+			imageView.setImage(null);
+			if (event.getWine().getImage() != null) {
+				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
+			}
+
+		}
+	}
+
+	@Component
+	class ShowWineImageEventHandler implements ApplicationListener<ShowImageEvent> {
+		@Override
+		public void onApplicationEvent(ShowImageEvent event) {
+			imageView.setImage(null);
+			if (event.getImage() != null) {
+				imageView.setImage(new Image(new ByteArrayInputStream(event.getImage().getData())));
+			}
+
+		}
+	}
+
+	@Component
 	class SaveWineEventHandler implements ApplicationListener<SaveWineEvent> {
 
 		@Override
@@ -41,18 +66,6 @@ public class WineImageDetailController implements Initializable {
 			}
 		}
 
-	}
-
-	@Component
-	class ShowWineImageDetailEventHandler implements ApplicationListener<WineDetailsEvent> {
-		@Override
-		public void onApplicationEvent(WineDetailsEvent event) {
-			imageView.setImage(null);
-			if (event.getWine().getImage() != null) {
-				imageView.setImage(new Image(new ByteArrayInputStream(event.getWine().getImage().getData())));
-			}
-
-		}
 	}
 
 	@Override
