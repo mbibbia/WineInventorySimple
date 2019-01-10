@@ -39,7 +39,7 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </HBox>
-            <TextField fx:id="name" maxWidth="246.0" prefHeight="30.0" prefWidth="246.0" promptText="Name">
+            <TextField fx:id="name" maxWidth="246.0" onKeyTyped="#handleNameChanged" prefHeight="30.0" prefWidth="246.0" promptText="Name">
                <VBox.margin>
                   <Insets left="25.0" right="25.0" />
                </VBox.margin>
@@ -69,7 +69,7 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </ComboBox>
-            <Button fx:id="browseImage" mnemonicParsing="false" onAction="#browseImage" prefHeight="26.0" prefWidth="85.0" text="Image...">
+            <Button fx:id="browseImage" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#browseImage" prefHeight="26.0" prefWidth="244.0" text="Image...">
                <VBox.margin>
                   <Insets left="25.0" right="25.0" />
                </VBox.margin>
