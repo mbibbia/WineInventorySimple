@@ -155,19 +155,27 @@ public class WineDetailController implements Initializable {
 	}
 
 	private ObservableList<WineType> loadTypes() {
-		return FXCollections.observableArrayList(wineTypeService.findAll());
+		ObservableList<WineType> list = FXCollections.observableArrayList(wineTypeService.findAll());
+		list.add(new WineType());
+		return list;
 	}
 
 	private ObservableList<Classification> loadClassifications() {
-		return FXCollections.observableArrayList(classificationService.findAll());
+		ObservableList<Classification> list = FXCollections.observableArrayList(classificationService.findAll());
+		list.add(new Classification());
+		return list;
 	}
 
 	private ObservableList<Country> loadCountries() {
-		return FXCollections.observableArrayList(countryService.findAll());
+		ObservableList<Country> list = FXCollections.observableArrayList(countryService.findAll());
+		list.add(new Country());
+		return list;
 	}
 
 	private ObservableList<Producer> loadProducers() {
-		return FXCollections.observableArrayList(producerService.findAll());
+		ObservableList<Producer> list = FXCollections.observableArrayList(producerService.findAll());
+		list.add(new Producer());
+		return list;
 	}
 
 	private String getName() {

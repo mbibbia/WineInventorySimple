@@ -190,6 +190,7 @@ public class WineTableController implements Initializable {
 			wineService.deleteInBatch(wines);
 
 		loadWines();
+	
 	}
 
 }
