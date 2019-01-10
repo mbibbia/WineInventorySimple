@@ -144,6 +144,14 @@ public class WineDetailController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		name.textProperty().addListener((observable, oldValue, newValue) -> {
+		    if (!newValue.isEmpty()) {
+		    	saveWine.setDisable(false);
+		    } else {
+		    	saveWine.setDisable(true);
+		    }
+		});
+		
 		type.setItems(loadTypes());
 		classification.setItems(loadClassifications());
 		country.setItems(loadCountries());
@@ -211,7 +219,6 @@ public class WineDetailController implements Initializable {
 		producer.getSelectionModel().clearSelection();
 		browseImage.setText("Add Image...");
 		saveWine.setDisable(true);
-
 	}
 
 	@FXML
@@ -221,12 +228,6 @@ public class WineDetailController implements Initializable {
 			ObservableList<Region> regions = FXCollections.observableArrayList(country.getValue().getRegions());
 			region.setItems(regions);
 		}
-	}
-
-	@FXML
-	private void handleNameChanged() {
-		saveWine.setDisable(false);
-
 	}
 
 	@FXML
