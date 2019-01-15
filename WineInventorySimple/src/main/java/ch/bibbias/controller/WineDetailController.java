@@ -145,7 +145,7 @@ public class WineDetailController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		name.textProperty().addListener((observable, oldValue, newValue) -> {
-		    if (!newValue.isEmpty()) {
+		    if (!newValue.trim().isEmpty()) {
 		    	saveWine.setDisable(false);
 		    } else {
 		    	saveWine.setDisable(true);
